@@ -1,0 +1,24 @@
+{
+  "development": {
+    "PORT": 9000,
+    "DBPORT": "",
+    "USER": "root",
+    "HOST": "127.0.0.1",
+    "SECRET_KEY": "",
+    "DATABASE": "random",
+    "IP": "127.0.0.1",
+    "MONGODB_URI": "mongodb://127.0.0.1:27017/CSGO_REPO_BETA_test",
+    "JWT_SECRET": "somethingsecret"
+  },
+  "server": {
+    "PORT": 8080,
+    "DBPORT": 8080,
+    "USER": "root",
+    "HOST": "127.0.0.1",
+    "SECRET_KEY": "pass1235",
+    "DATABASE": "random",
+    "IP": "159.89.96.8",
+    "DB_TYPE": "mysql",
+    "JWT_SECRET": "somethingsecret"
+  }
+}
