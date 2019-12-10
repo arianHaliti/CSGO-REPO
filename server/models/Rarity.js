@@ -6,7 +6,7 @@ const RaritySchema = new Schema({
     type: String,
     required: true
   },
-  rairty_color: {
+  rarity_color: {
     type: String,
     required: true
   },

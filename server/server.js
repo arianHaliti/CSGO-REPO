@@ -6,7 +6,6 @@ const app = express();
 
 const Item = require("./models/Item");
 const Price = require("./models/Price");
-const Exterior = require("./models/Exterior");
 
 // Init Middleware
 app.use(express.json({ extended: false }));
