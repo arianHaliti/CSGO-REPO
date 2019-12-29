@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
-    "server": "nodemon server/server.js"
+    "server": "nodemon server/server.js",
+    "online": "export NODE_ENV=development-online || SET \"NODE_ENV=development-online\" && node server/server.js"
   },
   "author": "Arian Haliti",
   "license": "ISC",
   "dependencies": {
     "config": "^3.2.4",
     "express": "^4.17.1",
-    "mongoose": "^5.7.14"
+    "lodash": "^4.17.15",
+    "mongoose": "^5.7.14",
+    "request": "^2.88.0"
   }
 }

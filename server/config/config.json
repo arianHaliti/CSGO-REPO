@@ -20,5 +20,16 @@
     "IP": "159.89.96.8",
     "DB_TYPE": "mysql",
     "JWT_SECRET": "somethingsecret"
+  },
+  "development-online": {
+    "PORT": 9000,
+    "DBPORT": "",
+    "USER": "root",
+    "HOST": "127.0.0.1",
+    "SECRET_KEY": "",
+    "DATABASE": "random",
+    "IP": "127.0.0.1",
+    "MONGODB_URI": "mongodb+srv://arian:123123!@cluster0-lrf8n.mongodb.net/csgo-repo?retryWrites=true&w=majority",
+    "JWT_SECRET": "somethingsecret"
   }
 }
