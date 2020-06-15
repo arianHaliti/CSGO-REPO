@@ -11,12 +11,13 @@ const Price = require("./models/Price");
 app.use(express.json({ extended: false }));
 
 app.get("/", (req, res) => {
-  Price.find({}).then(i => {
+  Price.find({}).then((i) => {
     res.send(i);
   });
 });
 
 app.use("/api/development", require("./routes/api/development"));
+app.use("/api/inventory", require("./routes/api/inventory"));
 
 // app.use("/api/auth", require("./routes/api/auth"));
 // app.use("/api/users", require("./routes/api/users"));
