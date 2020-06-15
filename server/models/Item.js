@@ -5,64 +5,61 @@ const ItemSchema = new Schema(
   {
     marketable: {
       type: Number,
-      required: true
+      required: true,
     },
     tradable: {
       type: Number,
-      required: true
+      required: true,
     },
     large_icon: {
       type: String,
-      required: true
     },
     icon: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     market_hash_name: {
       type: String,
-      required: true
+      required: true,
     },
     description: {
       type: String,
-      required: true
     },
-    count: {
-      type: Number
-    },
-    // References
     rarity: {
       type: Schema.Types.ObjectId,
-      ref: "Rarity"
+      ref: "Rarity",
     },
     type: {
       type: Schema.Types.ObjectId,
-      ref: "Type"
+      ref: "Type",
     },
-    extirior: {
-      type: Schema.Types.ObjectId,
-      ref: "Exterior"
+    additional: {
+      rarity: {
+        type: String,
+      },
+      type: {
+        type: String,
+      },
     },
-
     created_at: {
       type: Date,
-      default: Date.now()
+      default: Date.now(),
     },
     update_at: {
       type: Date,
-      default: Date.now()
-    }
+      default: Date.now(),
+    },
   },
   { toJSON: { virtuals: true } }
 );
 ItemSchema.virtual("prices", {
   ref: "prices",
   localField: "_id",
-  foreignField: "itemid"
+  foreignField: "itemid",
 });
 Item = mongoose.model("items", ItemSchema);
 

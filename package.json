@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "server": "nodemon server/server.js",
-    "online": "export NODE_ENV=development-online || SET \"NODE_ENV=development-online\" && node server/server.js"
+    "online": "export NODE_ENV=development-online || SET \"NODE_ENV=development-online\" && nodemon server/server.js"
   },
   "author": "Arian Haliti",
   "license": "ISC",

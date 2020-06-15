@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const request = require("request");
 const _ = require("lodash");
+const mongoose = require("mongoose");
 
 const Exterior = require("../../models/Exterior");
 const Type = require("../../models/Types");
 const Rarity = require("../../models/Rarity");
 const Item = require("../../models/Item");
+const { response } = require("express");
 
 // @route   POST api/development
 // @desc    Adds Exteriors
@@ -19,7 +21,7 @@ router.post("/_exterior", (req, res) => {
     "Field-Tested",
     "Minimal Wear",
     "Well-Worn",
-    "Not Painted"
+    "Not Painted",
   ];
   // count of exteriors to be added
   let i = 0;
@@ -30,15 +32,15 @@ router.post("/_exterior", (req, res) => {
         for (const ext of exteriros) {
           // For each exterior save it
           let newExt = new Exterior({
-            exterior: ext
+            exterior: ext,
           });
           await newExt
             .save()
-            .then(item => {
+            .then((item) => {
               console.log(item.exterior, "Exterior has been added");
               i++;
             })
-            .catch(e => {
+            .catch((e) => {
               console.log(e, "Something went wrong");
               res.send({ message: "error", count: i });
             });
@@ -46,7 +48,7 @@ router.post("/_exterior", (req, res) => {
         console.log("Total exterior added", i);
         res.send({ message: "success", count: i });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e, "Something went wrong");
         res.status(501).json({ message: "error", count: i });
       });
@@ -70,7 +72,21 @@ router.post("/_types", (req, res) => {
     "Pass",
     "Music Kit",
     "Graffiti",
-    "Gloves"
+    "Gloves",
+    "Container",
+    "Graffiti",
+    "Pass",
+    "Sniper Rifle",
+    "Sticker",
+    "Container",
+    "Tool",
+    "Machinegun",
+    "Pistol",
+    "Shotgun",
+    "Rifle",
+    "Collectible",
+    "SMG",
+    "Container",
   ];
   // count of types to be added
   let i = 0;
@@ -81,15 +97,15 @@ router.post("/_types", (req, res) => {
         for (const t of types) {
           // For each `type` save it
           let newType = new Type({
-            type: t
+            type: t,
           });
           await newType
             .save()
-            .then(item => {
+            .then((item) => {
               console.log(item.type, "Types has been added");
               i++;
             })
-            .catch(e => {
+            .catch((e) => {
               console.log(e, "Something went wrong");
               res.send({ message: "error", count: i });
             });
@@ -97,7 +113,7 @@ router.post("/_types", (req, res) => {
         console.log("Total Types added", i);
         res.send({ message: "success", count: i });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e, "Something went wrong");
         res.status(501).json({ message: "error", count: i });
       });
@@ -124,7 +140,7 @@ router.post("/_rarities", (req, res) => {
     { rarity: "High Grade", rarity_color: "4b69ff" },
     { rarity: "Extraordinary", rarity_color: "eb4b4b" },
     { rarity: "Remarkable", rarity_color: "8847ff" },
-    { rarity: "Contraband", rarity_color: "e4ae39" }
+    { rarity: "Contraband", rarity_color: "e4ae39" },
   ];
 
   // count of rarities to be added
@@ -137,11 +153,11 @@ router.post("/_rarities", (req, res) => {
           // For each `rarity` save it
           let newRarity = new Rarity({
             rarity: r.rarity,
-            rarity_color: r.rarity_color
+            rarity_color: r.rarity_color,
           });
           await newRarity
             .save()
-            .then(item => {
+            .then((item) => {
               console.log(
                 item.rarity,
                 item.rarity_color,
@@ -149,7 +165,7 @@ router.post("/_rarities", (req, res) => {
               );
               i++;
             })
-            .catch(e => {
+            .catch((e) => {
               console.log(e, "Something went wrong");
               res.send({ message: "error", count: i });
             });
@@ -157,7 +173,7 @@ router.post("/_rarities", (req, res) => {
         console.log("Total Rarities added", i);
         res.send({ message: "success", count: i });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e, "Something went wrong");
         res.status(501).json({ message: "error", count: i });
       });
@@ -170,7 +186,7 @@ router.post("/_rarities", (req, res) => {
 // @route   POST api/development
 // @desc    Adds Rarities
 // @access  Private
-router.get("/_items", (req, res) => {
+router.get("/_items", async (req, res) => {
   // request(
   //   "https://steamcommunity.com/inventory/76561198069559601/730/2?l=english&count=5000",
   //   (e, r, body) => {
@@ -182,23 +198,71 @@ router.get("/_items", (req, res) => {
 
   let assets = body.assets;
   let desc = body.descriptions;
-
+  // res.send(desc[0].name);
+  // return;
   items = [];
   for (const d of desc) {
-    rarity = _.find(d.tags, { category: "Rarity" });
-    res.send(rarity);
-    return;
-    let newItem = new Item({
-      marketable: d.marketable,
-      tradable: d.tradable,
-      large_icon: d.icon_url_large,
+    // Get Description
+    description = d.descriptions[2] ? d.descriptions[2].value : null;
+
+    // Item Model
+    let item = {
       icon: d.icon_url,
+      large_icon: d.icon_url_large,
+      tradable: d.tradable,
       name: d.name,
+      name_color: d.name_color,
+      market_name: d.market_name,
       market_hash_name: d.market_hash_name,
-      description: descriptions[0].value
-    });
+      description,
+      marketable: d.marketable,
+    };
+
+    // Check if item exist in DB
+    let dbItem = await Item.find({ name: item.name });
+
+    if (dbItem.length !== 0) {
+      console.log("Item is Already in  DB : ", item.name);
+      console.log("\x1b[33m%s\x1b[0m", dbItem[0].id);
+    } else {
+      // Get Rarity
+      let rarity = d.tags.filter((cat) => {
+        if (cat.category === "Rarity") return cat.category;
+      });
+
+      // Get Rarity ID from DB
+      let dbRarity = await Rarity.find({
+        rarity: rarity[0].localized_tag_name,
+      });
+
+      // Get Type ID from DB
+      let dbType = await Type.find({ type: d.tags[0].localized_tag_name });
+
+      // Insert ID's in Model
+      if (dbRarity.length !== 0) {
+        item.rarity = mongoose.Types.ObjectId(dbRarity[0]._id);
+      }
+      if (dbType.length !== 0) {
+        item.type = mongoose.Types.ObjectId(dbType[0]._id);
+      }
+
+      // Additional Info
+      item.additional = {
+        rarity: dbRarity[0].rarity,
+        type: d.tags[0].localized_tag_name,
+      };
+
+      // Add new item
+      let newItem = new Item(item);
+      await newItem.save();
+      console.log("New Item adde with name : ", item.name);
+    }
+
+    items.push(item);
   }
-  res.send(items.length);
+  itemsAdded = items.length;
+  let response = { items, itemsAdded };
+  res.send(response);
 });
 
 module.exports = router;
