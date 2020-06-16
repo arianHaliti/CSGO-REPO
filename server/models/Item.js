@@ -53,14 +53,14 @@ const ItemSchema = new Schema(
       type: Date,
       default: Date.now(),
     },
-  },
-  { toJSON: { virtuals: true } }
+  }
+  // { toJSON: { virtuals: true } }
 );
-ItemSchema.virtual("prices", {
-  ref: "prices",
-  localField: "_id",
-  foreignField: "itemid",
-});
+// ItemSchema.virtual("prices", {
+//   ref: "prices",
+//   localField: "_id",
+//   foreignField: "itemid",
+// });
 Item = mongoose.model("items", ItemSchema);
 
 module.exports = Item;

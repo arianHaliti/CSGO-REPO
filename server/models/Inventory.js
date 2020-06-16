@@ -3,11 +3,26 @@ const Schema = mongoose.Schema;
 
 const InventorySchema = new Schema(
   {
-    item: {
-      type: Schema.Types.ObjectId,
-      ref: "Type",
+    items: [
+      {
+        item: {
+          type: String,
+        },
+        count: {
+          type: Number,
+        },
+        exterior: {
+          type: String,
+        },
+        price: {
+          type: Number,
+        },
+      },
+    ],
+    totalCount: {
+      type: Number,
     },
-    count: {
+    totalPrice: {
       type: Number,
     },
     created_at: {
@@ -21,15 +36,15 @@ const InventorySchema = new Schema(
   },
   { toJSON: { virtuals: true } }
 );
-ItemSchema.virtual("item", {
+InventorySchema.virtual("item", {
   ref: "items",
   localField: "item",
   foreignField: "_id",
 });
-ItemSchema.virtual("prices", {
-  ref: "prices",
-  localField: "_id",
-  foreignField: "itemid",
+InventorySchema.virtual("prices", {
+  ref: "price",
+  localField: "name",
+  foreignField: "name",
 });
 Inventory = mongoose.model("inventories", InventorySchema);
 

@@ -141,6 +141,11 @@ router.post("/_rarities", (req, res) => {
     { rarity: "Extraordinary", rarity_color: "eb4b4b" },
     { rarity: "Remarkable", rarity_color: "8847ff" },
     { rarity: "Contraband", rarity_color: "e4ae39" },
+    { rarity: "Distinguished", rarity_color: "4b69ff" },
+    { rarity: "Exceptional", rarity_color: "8847ff" },
+    { rarity: "Superior", rarity_color: "d32ce6" },
+    { rarity: "Master", rarity_color: "eb4b4b" },
+    { rarity: "Stock", rarity_color: "6a6156" },
   ];
 
   // count of rarities to be added
@@ -194,7 +199,7 @@ router.get("/_items", async (req, res) => {
   //   }
   // );
 
-  let body = require("./inv.json");
+  let body = require("./inv3.json");
 
   let assets = body.assets;
   let desc = body.descriptions;
