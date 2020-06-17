@@ -270,4 +270,78 @@ router.get("/_items", async (req, res) => {
   res.send(response);
 });
 
+// @route   POST api/development
+// @desc    Gets Prices of items
+// @access  Private
+router.post("/_prices", async (req, res) => {
+  let items = await Item.find({});
+  let time = 100;
+  const size = items.length;
+  console.log(size, "ETA : " + (size * time) / 1000 + " s");
+
+  items.forEach((item, index) => {
+    try {
+      setTimeout(function (time) {
+        // request(
+        //   `https://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=${item.market_hash_name}`,
+        //   (e, r, body) => {
+        Price.findOne({ name: item.market_hash_name })
+          .then((check) => {
+            // console.log(body);
+
+            if (!check) {
+              // console.log(JSON.parse(body).lowest_price);
+              console.log("\x1b[33m%s\x1b[0m", item.market_hash_name);
+              console.log("Added to price history");
+
+              let price = new Price({
+                itemid: item._id,
+                name: item.market_hash_name,
+                prices: {
+                  price: Math.floor(Math.random() * 100) + 1,
+                  volume: Math.floor(Math.random() * 100000) + 1,
+                },
+              });
+
+              price
+                .save()
+                .then((price) => {
+                  console.log(
+                    "\x1b[32m%s\x1b[0m",
+                    `Price saved for id: ${price.name}`
+                  );
+                  console.log("-----------------------------------");
+                })
+                .catch((e) => console.log(e));
+            } else {
+              let price = {
+                price: Math.floor(Math.random() * 100) + 1,
+                volume: Math.floor(Math.random() * 100000) + 1,
+              };
+              check.prices.unshift(price);
+              check.save().then((i) => {
+                console.log(item.market_hash_name);
+                console.log(
+                  `Price Updated price= ${i.prices[0].price} --- volume = ${i.prices[0].volume}`,
+                  " index of  : " + index
+                );
+                console.log("-----------------------------------");
+              });
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+        // }
+        // );
+      }, time * index);
+    } catch (e) {
+      console.log("Something went wrong");
+    }
+  });
+  res.send({
+    time,
+    size,
+  });
+});
 module.exports = router;

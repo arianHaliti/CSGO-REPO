@@ -15,7 +15,7 @@ const e = require("express");
 // @desc    Update Invetory
 // @access  public
 router.post("/update", async (req, res) => {
-  let body = require("./inv3.json");
+  let body = require("./inv4.json");
 
   let assets = body.assets;
   let desc = body.descriptions;
@@ -32,46 +32,28 @@ router.post("/update", async (req, res) => {
       if (cat.category === "Exterior") return cat.category;
     });
     let check = items.find((item) => {
-      if (item.name == newItem.name) {
-        console.log(item);
-
-        if (item.exterior.length > 0)
-          console.log(
-            item.exterior[0].localized_tag_name,
-            exterior[0].localized_tag_name
-          );
-
-        if (
-          item.exterior.length > 0 &&
-          item.exterior[0].localized_tag_name == exterior[0].localized_tag_name
-        ) {
-          return true;
-        } else if (!item.exterior) {
-          return true;
-        }
+      if (item.item == newItem.market_hash_name) {
+        return true;
       }
 
       //   return true;
     });
-    // console.log(check);
-    // return;
 
     if (check) {
-      //   console.log(check);
-
+      // Increase count of item
       items.find((item) => {
-        if (item.name == newItem.name) {
+        if (item.item == newItem.market_hash_name) {
           item.count = ++item.count;
-          //   console.log(item);
         }
       });
     } else {
-      //   console.log("ADD");
-      items.push({
-        name: newItem.name,
+      // Add new Item in list
+      item = {
+        item: newItem.market_hash_name,
         count: 1,
-        exterior: exterior,
-      });
+      };
+      if (exterior.length != 0) item.exterior = exterior[0].localized_tag_name;
+      items.push(item);
     }
   }
 
@@ -83,9 +65,9 @@ router.post("/update", async (req, res) => {
     totalPrice: 0,
   };
   let newInvetory = new Inventory(inventory);
-  //   await newInvetory.save();
+  await newInvetory.save();
 
-  let response = { items, countItems };
+  let response = { inventory, countItems };
   res.send(response);
 });
 
