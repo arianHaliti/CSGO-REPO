@@ -275,65 +275,76 @@ router.get("/_items", async (req, res) => {
 // @access  Private
 router.post("/_prices", async (req, res) => {
   let items = await Item.find({});
-  let time = 100;
+  let time = 3000;
   const size = items.length;
   console.log(size, "ETA : " + (size * time) / 1000 + " s");
 
   items.forEach((item, index) => {
     try {
       setTimeout(function (time) {
-        // request(
-        //   `https://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=${item.market_hash_name}`,
-        //   (e, r, body) => {
-        Price.findOne({ name: item.market_hash_name })
-          .then((check) => {
-            // console.log(body);
+        // Request Steam price API for item
+        request(
+          `https://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=${item.market_hash_name}`,
+          (e, r, body) => {
+            Price.findOne({ name: item.market_hash_name })
+              .then((check) => {
+                try {
+                  body = JSON.parse(body);
 
-            if (!check) {
-              // console.log(JSON.parse(body).lowest_price);
-              console.log("\x1b[33m%s\x1b[0m", item.market_hash_name);
-              console.log("Added to price history");
+                  // Check if its on DB
+                  if (!check) {
+                    console.log("\x1b[33m%s\x1b[0m", item.market_hash_name);
+                    console.log("Added to price history");
 
-              let price = new Price({
-                itemid: item._id,
-                name: item.market_hash_name,
-                prices: {
-                  price: Math.floor(Math.random() * 100) + 1,
-                  volume: Math.floor(Math.random() * 100000) + 1,
-                },
-              });
+                    let price = new Price({
+                      itemid: item._id,
+                      name: item.market_hash_name,
+                      prices: {
+                        price: body.lowest_price,
+                        volume: body.volume,
+                      },
+                    });
+                    // Add on DB new Price
+                    price
+                      .save()
+                      .then((price) => {
+                        console.log(
+                          "\x1b[32m%s\x1b[0m",
+                          `Price saved for id: ${price.name}`
+                        );
+                        console.log("-----------------------------------");
+                      })
+                      .catch((e) => console.log(e));
+                  }
 
-              price
-                .save()
-                .then((price) => {
+                  // Update price history
+                  else {
+                    let price = {
+                      price: body.lowest_price,
+                      volume: body.volume,
+                    };
+                    check.prices.unshift(price);
+                    check.save().then((i) => {
+                      console.log(item.market_hash_name);
+                      console.log(
+                        `Price Updated price= ${i.prices[0].price} --- volume = ${i.prices[0].volume}`,
+                        " index of  : " + index
+                      );
+                      console.log("-----------------------------------");
+                    });
+                  }
+                } catch (e) {
                   console.log(
-                    "\x1b[32m%s\x1b[0m",
-                    `Price saved for id: ${price.name}`
+                    "\x1b[31m%s\x1b[0m",
+                    `Item does not have Price: ${item.market_hash_name}`
                   );
-                  console.log("-----------------------------------");
-                })
-                .catch((e) => console.log(e));
-            } else {
-              let price = {
-                price: Math.floor(Math.random() * 100) + 1,
-                volume: Math.floor(Math.random() * 100000) + 1,
-              };
-              check.prices.unshift(price);
-              check.save().then((i) => {
-                console.log(item.market_hash_name);
-                console.log(
-                  `Price Updated price= ${i.prices[0].price} --- volume = ${i.prices[0].volume}`,
-                  " index of  : " + index
-                );
-                console.log("-----------------------------------");
+                }
+              })
+              .catch((e) => {
+                console.log(e);
               });
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-        // }
-        // );
+          }
+        );
       }, time * index);
     } catch (e) {
       console.log("Something went wrong");

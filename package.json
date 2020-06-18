@@ -6,11 +6,14 @@
   "scripts": {
     "start": "node server/server.js",
     "server": "nodemon server/server.js",
-    "online": "export NODE_ENV=development-online || SET \"NODE_ENV=development-online\" && nodemon server/server.js"
+    "online": "export NODE_ENV=development-online || SET \"NODE_ENV=development-online\" && nodemon server/server.js",
+    "client": "npm start --prefix client",
+    "devonline": "concurrently \"npm run online\" \"npm run client\""
   },
   "author": "Arian Haliti",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^5.2.0",
     "config": "^3.2.4",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
