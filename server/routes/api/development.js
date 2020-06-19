@@ -199,7 +199,7 @@ router.get("/_items", async (req, res) => {
   //   }
   // );
 
-  let body = require("./inv3.json");
+  let body = require("./inv4.json");
 
   let assets = body.assets;
   let desc = body.descriptions;
@@ -291,17 +291,23 @@ router.post("/_prices", async (req, res) => {
                 try {
                   body = JSON.parse(body);
 
+                  let low_price = body.lowest_price
+                    .substring(0, body.lowest_price.length - 1)
+                    .replace(/,/g, ".");
+
+                  let volume = body.volume.replace(/,/g, "");
+
                   // Check if its on DB
                   if (!check) {
                     console.log("\x1b[33m%s\x1b[0m", item.market_hash_name);
                     console.log("Added to price history");
 
                     let price = new Price({
-                      itemid: item._id,
+                      itemid: mongoose.Types.ObjectId(item._id),
                       name: item.market_hash_name,
                       prices: {
-                        price: body.lowest_price,
-                        volume: body.volume,
+                        price: low_price,
+                        volume,
                       },
                     });
                     // Add on DB new Price
@@ -320,8 +326,8 @@ router.post("/_prices", async (req, res) => {
                   // Update price history
                   else {
                     let price = {
-                      price: body.lowest_price,
-                      volume: body.volume,
+                      price: low_price,
+                      volume,
                     };
                     check.prices.unshift(price);
                     check.save().then((i) => {

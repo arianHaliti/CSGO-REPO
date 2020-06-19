@@ -8,7 +8,9 @@ const Item = require("../../models/Item");
 // @desc    Gets Items
 // @access  Public
 router.get("/items", async (req, res) => {
-  let items = await Item.find({});
+  let items = await Item.find({})
+    .populate("price_list")
+    .populate("rarity_type");
   res.send(items);
 });
 module.exports = router;

@@ -3,27 +3,28 @@ const Schema = mongoose.Schema;
 
 const PriceSchema = new Schema({
   itemid: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: "Item",
   },
   name: {
-    type: String
+    type: String,
   },
   prices: [
     {
       price: {
-        type: String,
-        deafult: "0.00"
+        type: Number,
+        deafult: 0.0,
       },
       volume: {
-        type: String,
-        deafult: "0"
+        type: Number,
+        deafult: 0,
       },
       date: {
         type: Date,
-        default: Date.now()
-      }
-    }
-  ]
+        default: Date.now(),
+      },
+    },
+  ],
 });
 Price = mongoose.model("prices", PriceSchema);
 
