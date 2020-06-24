@@ -1,10 +1,11 @@
-import React from "react";
-
+import React, { useState, useEffect, Fragment } from "react";
+import SearchBar from "../../components/layout/SearchBar";
 const Home = () => {
+  const [search, setItems] = useState([]);
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <Fragment>
+      <SearchBar />
+    </Fragment>
   );
 };
 

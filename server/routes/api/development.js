@@ -293,6 +293,7 @@ router.post("/_prices", async (req, res) => {
 
                   let low_price = body.lowest_price
                     .substring(0, body.lowest_price.length - 1)
+                    .replace(/[^0-9,]/g, "")
                     .replace(/,/g, ".");
 
                   let volume = body.volume.replace(/,/g, "");

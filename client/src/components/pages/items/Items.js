@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ItemSingle from "./ItemSingle";
+import Preloader from "../../layout/Preloader";
 import axios from "axios";
 const Item = () => {
   const [items, setItems] = useState([]);
@@ -19,7 +20,7 @@ const Item = () => {
   };
 
   if (loading) {
-    return <h4>Loading...</h4>;
+    return <Preloader />;
   }
   return (
     <div className="row">
