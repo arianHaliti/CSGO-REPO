@@ -17,6 +17,10 @@ const InventorySchema = new Schema(
         price: {
           type: Number,
         },
+        active: {
+          type: Boolean,
+          required: true,
+        },
       },
     ],
     totalCount: {

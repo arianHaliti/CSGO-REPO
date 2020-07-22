@@ -8,6 +8,7 @@ const Exterior = require("../../models/Exterior");
 const Type = require("../../models/Types");
 const Rarity = require("../../models/Rarity");
 const Item = require("../../models/Item");
+const InventoryStatus = require("../../models/InventoryStatus");
 const { response } = require("express");
 
 // @route   POST api/development
@@ -279,6 +280,13 @@ router.post("/_prices", async (req, res) => {
   const size = items.length;
   console.log(size, "ETA : " + (size * time) / 1000 + " s");
 
+  let invetoryState = new InventoryStatus({
+    price_update_start_time: new Date(Date.now()),
+    price_update_end_time: new Date(Date.now() + size * time),
+    price_status: "processing",
+  });
+  invetoryState.save();
+
   items.forEach((item, index) => {
     try {
       setTimeout(function (time) {
@@ -345,6 +353,10 @@ router.post("/_prices", async (req, res) => {
                     "\x1b[31m%s\x1b[0m",
                     `Item does not have Price: ${item.market_hash_name}`
                   );
+                }
+                if (size === index + 1) {
+                  invetoryState.status = "done";
+                  invetoryState.save();
                 }
               })
               .catch((e) => {

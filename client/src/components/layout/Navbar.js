@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ title, icon }) => {
   return (
-    <div className="navbar-fixed" style={{ marginBottom: "45px" }}>
+    <div className="navbar-fixed" style={{ marginBottom: "65px" }}>
       <nav>
         <div className="nav-wrapper #263238 blue-grey darken-4">
           <a href="#" className="brand-logo ">
