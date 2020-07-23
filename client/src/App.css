@@ -194,3 +194,10 @@ ul {
   color: #333;
   border: #ccc solid 1px;
 }
+
+.close-alert-button {
+  float: right;
+  color: white;
+  border: none;
+  background-color: transparent;
+}

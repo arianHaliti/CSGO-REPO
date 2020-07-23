@@ -25,8 +25,7 @@ const Item = (props) => {
     setLoading(false);
   };
   const onUpdatePrices = () => {
-    console.log("hello");
-    props.setAlert("Updating prices", "danger");
+    props.setAlert("Updating prices", "danger", false);
   };
   if (loading) {
     return <Preloader />;
@@ -35,7 +34,7 @@ const Item = (props) => {
     <Fragment>
       <div className="items-above-section row">
         <div className=" row  col s3">
-          <div clasName="items-update-prices">
+          <div className="items-update-prices">
             <h6>Update the item prices</h6>
             <button
               className="btn-large waves-effect waves-light  red lighten-2"
