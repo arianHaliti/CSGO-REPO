@@ -1,5 +1,4 @@
 import React from "react";
-import Item from "./Items";
 
 const ItemSingle = ({ item }) => {
   const current =
@@ -14,9 +13,9 @@ const ItemSingle = ({ item }) => {
     diff = (((current - before) / current) * 100).toFixed(2);
 
   const diffColor =
-    diff == 0 || isNaN(diff) ? "#ffffff" : diff > 0 ? "#00c853 " : "#ff5722 ";
+    diff === 0 || isNaN(diff) ? "#ffffff" : diff > 0 ? "#00c853 " : "#ff5722 ";
   const diffIcon =
-    diff == 0 || isNaN(diff)
+    diff === 0 || isNaN(diff)
       ? "trending_flat"
       : diff > 0
       ? "trending_upf "
@@ -40,6 +39,7 @@ const ItemSingle = ({ item }) => {
         <div className="card-content center">
           <img
             className="activator"
+            alt={item.icon}
             style={{ width: "200px", height: "200px" }}
             src={
               "https://steamcommunity-a.akamaihd.net/economy/image/" +

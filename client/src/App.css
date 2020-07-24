@@ -201,3 +201,14 @@ ul {
   border: none;
   background-color: transparent;
 }
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: auto;
+}
+.red-color-text {
+  color: #ee6e73;
+}

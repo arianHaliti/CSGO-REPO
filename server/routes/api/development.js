@@ -284,6 +284,8 @@ router.post("/_prices", async (req, res) => {
     price_update_start_time: new Date(Date.now()),
     price_update_end_time: new Date(Date.now() + size * time),
     price_status: "processing",
+    total_items: size,
+    timeout_time: time,
   });
   invetoryState.save();
 
@@ -320,16 +322,16 @@ router.post("/_prices", async (req, res) => {
                       },
                     });
                     // Add on DB new Price
-                    price
-                      .save()
-                      .then((price) => {
-                        console.log(
-                          "\x1b[32m%s\x1b[0m",
-                          `Price saved for id: ${price.name}`
-                        );
-                        console.log("-----------------------------------");
-                      })
-                      .catch((e) => console.log(e));
+                    // price
+                    //   .save()
+                    //   .then((price) => {
+                    //     console.log(
+                    //       "\x1b[32m%s\x1b[0m",
+                    //       `Price saved for id: ${price.name}`
+                    //     );
+                    //     console.log("-----------------------------------");
+                    //   })
+                    //   .catch((e) => console.log(e));
                   }
 
                   // Update price history
@@ -338,15 +340,15 @@ router.post("/_prices", async (req, res) => {
                       price: low_price,
                       volume,
                     };
-                    check.prices.unshift(price);
-                    check.save().then((i) => {
-                      console.log(item.market_hash_name);
-                      console.log(
-                        `Price Updated price= ${i.prices[0].price} --- volume = ${i.prices[0].volume}`,
-                        " index of  : " + index
-                      );
-                      console.log("-----------------------------------");
-                    });
+                    // check.prices.unshift(price);
+                    // check.save().then((i) => {
+                    //   console.log(item.market_hash_name);
+                    //   console.log(
+                    //     `Price Updated price= ${i.prices[0].price} --- volume = ${i.prices[0].volume}`,
+                    //     " index of  : " + index
+                    //   );
+                    //   console.log("-----------------------------------");
+                    // });
                   }
                 } catch (e) {
                   console.log(
@@ -374,4 +376,27 @@ router.post("/_prices", async (req, res) => {
     size,
   });
 });
+
+// @route   GET api/development
+// @desc    Gets Status of inventory update
+// @access  Private
+router.get("/_prices_status", async (req, res) => {
+  try {
+    let invStatus = InventoryStatus.findOne({})
+      .sort({ created_at: -1 })
+      .exec(function (err, docs) {
+        if (Date.now() >= Date.parse(docs.price_update_end_time)) {
+          docs.price_status = "done";
+          docs.save().then((doc) => {
+            res.send(doc);
+          });
+        } else {
+          res.send(docs);
+        }
+      });
+  } catch (error) {
+    console.log(error, "error");
+  }
+});
+
 module.exports = router;

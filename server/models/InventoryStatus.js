@@ -15,6 +15,14 @@ const InventoryStatusSchema = new Schema({
     type: String,
     required: true,
   },
+  total_items: {
+    type: Number,
+    // required: true,
+  },
+  timeout_time: {
+    type: Number,
+    // required: true,
+  },
   created_at: {
     type: Date,
     default: Date.now(),

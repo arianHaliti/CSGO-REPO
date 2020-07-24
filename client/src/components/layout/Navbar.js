@@ -7,7 +7,7 @@ const Navbar = ({ title, icon }) => {
     <div className="navbar-fixed" style={{ marginBottom: "65px" }}>
       <nav>
         <div className="nav-wrapper #263238 blue-grey darken-4">
-          <a href="#" className="brand-logo ">
+          <a href="/#" className="brand-logo ">
             <i className="material-icons left">blur_circular</i> CSGO REPO
           </a>
 
@@ -30,18 +30,18 @@ const Navbar = ({ title, icon }) => {
         <div className="nav-content #424242 grey darken-3">
           <ul className="tabs tabs-transparent">
             <li className="tab">
-              <a href="#">Test 1</a>
+              <a href="/#">Test 1</a>
             </li>
             <li className="tab">
-              <a className="active" href="#">
+              <a className="active" href="/#">
                 Test 2
               </a>
             </li>
             <li className="tab disabled">
-              <a href="#">Disabled Tab</a>
+              <a href="/#">Disabled Tab</a>
             </li>
             <li className="tab">
-              <a href="#">Test 4</a>
+              <a href="/#">Test 4</a>
             </li>
           </ul>
         </div>

@@ -1,54 +1,31 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import ItemSingle from "./ItemSingle";
 import Preloader from "../../layout/Preloader";
-import axios from "axios";
+import PreloaderCircle from "../../layout/PreloaderCricle";
 import PropTypes from "prop-types";
-
+import UpdatePrices from "./ItemOptions/UpdatePrices";
 //redux
 import { connect } from "react-redux";
-import { setAlert } from "../../../actions/alert";
+import { getItems, updatePrices } from "../../../actions/items";
 
-const Item = (props) => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-
+const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
   useEffect(() => {
     getItems();
-    // eslint-disable-next-line
-  }, []);
+  }, [getItems]);
 
-  const getItems = async () => {
-    setLoading(true);
-    const res = await axios.get("/api/items/items");
-
-    setItems(res.data);
-    setLoading(false);
-  };
-  const onUpdatePrices = () => {
-    props.setAlert("Updating prices", "danger", false);
-  };
   if (loading) {
     return <Preloader />;
   }
   return (
     <Fragment>
-      <div className="items-above-section row">
-        <div className=" row  col s3">
-          <div className="items-update-prices">
-            <h6>Update the item prices</h6>
-            <button
-              className="btn-large waves-effect waves-light  red lighten-2"
-              onClick={onUpdatePrices}
-            >
-              <b>
-                Update
-                <i className="material-icons right">update</i>
-              </b>
-            </button>
-          </div>
-        </div>
-      </div>
-
+      {invetoryStatus ? (
+        <UpdatePrices
+          invetoryStatus={invetoryStatus}
+          updatePrices={updatePrices}
+        />
+      ) : (
+        <PreloaderCircle />
+      )}
       <div className="row">
         {!loading && items.length === 0 ? (
           <p className="center">No items found...</p>
@@ -61,7 +38,11 @@ const Item = (props) => {
 };
 
 Item.propTypes = {
-  setAlert: PropTypes.func.isRequired,
+  getItems: PropTypes.func.isRequired,
+  updatePrices: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setAlert })(Item);
+const mapStateToProps = (state) => ({
+  item: state.item,
+});
+export default connect(mapStateToProps, { getItems, updatePrices })(Item);
