@@ -322,16 +322,16 @@ router.post("/_prices", async (req, res) => {
                       },
                     });
                     // Add on DB new Price
-                    // price
-                    //   .save()
-                    //   .then((price) => {
-                    //     console.log(
-                    //       "\x1b[32m%s\x1b[0m",
-                    //       `Price saved for id: ${price.name}`
-                    //     );
-                    //     console.log("-----------------------------------");
-                    //   })
-                    //   .catch((e) => console.log(e));
+                    price
+                      .save()
+                      .then((price) => {
+                        console.log(
+                          "\x1b[32m%s\x1b[0m",
+                          `Price saved for id: ${price.name}`
+                        );
+                        console.log("-----------------------------------");
+                      })
+                      .catch((e) => console.log(e));
                   }
 
                   // Update price history
@@ -340,15 +340,15 @@ router.post("/_prices", async (req, res) => {
                       price: low_price,
                       volume,
                     };
-                    // check.prices.unshift(price);
-                    // check.save().then((i) => {
-                    //   console.log(item.market_hash_name);
-                    //   console.log(
-                    //     `Price Updated price= ${i.prices[0].price} --- volume = ${i.prices[0].volume}`,
-                    //     " index of  : " + index
-                    //   );
-                    //   console.log("-----------------------------------");
-                    // });
+                    check.prices.unshift(price);
+                    check.save().then((i) => {
+                      console.log(item.market_hash_name);
+                      console.log(
+                        `Price Updated price= ${i.prices[0].price} --- volume = ${i.prices[0].volume}`,
+                        " index of  : " + index
+                      );
+                      console.log("-----------------------------------");
+                    });
                   }
                 } catch (e) {
                   console.log(
