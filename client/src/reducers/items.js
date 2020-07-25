@@ -3,6 +3,7 @@ import {
   GET_ITEMS,
   ERROR_ITEM,
   GET_STATUS_PRICE,
+  SET_LOADING_ITEM,
 } from "../actions/types";
 const initialState = {
   items: [],
@@ -36,6 +37,11 @@ export default function (state = initialState, action) {
         ...state,
         error: payload,
         loading: false,
+      };
+    case SET_LOADING_ITEM:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

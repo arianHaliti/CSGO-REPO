@@ -316,6 +316,7 @@ router.post("/_prices", async (req, res) => {
                     let price = new Price({
                       itemid: mongoose.Types.ObjectId(item._id),
                       name: item.market_hash_name,
+                      last_price: low_price,
                       prices: {
                         price: low_price,
                         volume,
@@ -340,6 +341,7 @@ router.post("/_prices", async (req, res) => {
                       price: low_price,
                       volume,
                     };
+                    check.last_price = low_price;
                     check.prices.unshift(price);
                     check.save().then((i) => {
                       console.log(item.market_hash_name);

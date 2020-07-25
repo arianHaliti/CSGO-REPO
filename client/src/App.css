@@ -212,3 +212,13 @@ ul {
 .red-color-text {
   color: #ee6e73;
 }
+
+.modal-default {
+  background-color: #282c34 !important;
+  color: white !important;
+}
+
+.modal-default-input {
+  background-color: #343a40 !important;
+  color: #ee6e73 !important;
+}

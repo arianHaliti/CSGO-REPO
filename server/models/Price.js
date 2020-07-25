@@ -9,6 +9,11 @@ const PriceSchema = new Schema({
   name: {
     type: String,
   },
+  last_price: {
+    type: Number,
+    deafult: 0.0,
+    required: true,
+  },
   prices: [
     {
       price: {

@@ -9,7 +9,7 @@ import Alert from "./components/layout/Alert";
 import "materialize-css/dist/css/materialize.min.css";
 import M from "materialize-css/dist/js/materialize.min.js";
 import "./App.css";
-
+import FilterItemModal from "./components/pages/items/ItemOptions/FilterItemModal";
 // redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -25,6 +25,7 @@ const App = () => {
         <Fragment>
           <Navbar />
           <div className="container">
+            <FilterItemModal />
             <Alert />
             <Switch>
               <Route exact path="/" component={Home} />

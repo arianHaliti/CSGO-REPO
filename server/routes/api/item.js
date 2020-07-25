@@ -8,8 +8,13 @@ const Item = require("../../models/Item");
 // @desc    Gets Items
 // @access  Public
 router.get("/items", async (req, res) => {
+  let params = req.query;
+  if (params.name) {
+  }
+  if (params.order) {
+  }
   let items = await Item.find({})
-    .populate("price_list")
+    .populate({ path: "price_list", options: { $sort: { "prices.price": 1 } } })
     .populate("rarity_type");
   res.send(items);
 });

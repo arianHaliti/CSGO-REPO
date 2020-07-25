@@ -4,6 +4,7 @@ import Preloader from "../../layout/Preloader";
 import PreloaderCircle from "../../layout/PreloaderCricle";
 import PropTypes from "prop-types";
 import UpdatePrices from "./ItemOptions/UpdatePrices";
+import AddBtnFilter from "./ItemOptions/AddBtnFilter";
 //redux
 import { connect } from "react-redux";
 import { getItems, updatePrices } from "../../../actions/items";
@@ -11,7 +12,8 @@ import { getItems, updatePrices } from "../../../actions/items";
 const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
   useEffect(() => {
     getItems();
-  }, [getItems]);
+    // eslint-disable-next-line
+  }, []);
 
   if (loading) {
     return <Preloader />;
@@ -19,10 +21,13 @@ const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
   return (
     <Fragment>
       {invetoryStatus ? (
-        <UpdatePrices
-          invetoryStatus={invetoryStatus}
-          updatePrices={updatePrices}
-        />
+        <div className="items-above-section row">
+          <UpdatePrices
+            invetoryStatus={invetoryStatus}
+            updatePrices={updatePrices}
+          />
+          <AddBtnFilter />
+        </div>
       ) : (
         <PreloaderCircle />
       )}

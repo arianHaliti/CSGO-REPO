@@ -11,7 +11,6 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
   if (invetoryStatus.length === 0) {
     return <PreloaderCircle />;
   }
-  console.log(updatePrices);
   let diff = 0;
   let diff_end = 0;
   let current_server_time = Date.now();
@@ -22,81 +21,79 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
     diff = current_server_time.diff(prices_start, "seconds");
     diff_end = price_end.diff(current_server_time, "seconds");
   }
-  console.log(diff, diff_end);
-  return (
-    <div className="items-above-section row">
-      <div className=" row  col s4">
-        <div className="items-update-prices">
-          {invetoryStatus.price_status === "processing" ? (
-            <div>
-              <h5>Pirces are still processing</h5>
-              <p>
-                {" "}
-                Start time at:{" "}
-                <Moment format="MMMM Do YYYY, h:mm:ss a">
-                  {invetoryStatus.price_update_start_time}
-                </Moment>{" "}
-              </p>
-              <p>
-                {" "}
-                End time aprox at:{" "}
-                <Moment format="MMMM Do YYYY, h:mm:ss a">
-                  {invetoryStatus.price_update_end_time}
-                </Moment>
-              </p>
 
-              <p>
-                Total Items scanned aprox:{" "}
-                <strong className="red-color-text">
-                  <Countdown
-                    intervalDelay={3000}
-                    precision={3}
-                    date={Date.now() + diff_end * 1000}
-                    renderer={(props) => (
-                      <span>
-                        {Math.round(
-                          (invetoryStatus.total_items * 3 -
-                            Math.round(props.total / 1000)) /
-                            3
-                        )}
-                      </span>
-                    )}
-                  />
-                </strong>
-              </p>
-              <p>
-                EST:{" "}
-                <strong className="red-color-text">
-                  {" "}
-                  <Countdown date={diff_end * 1000 + current_server_time}>
-                    <span>You are good to go!</span>
-                  </Countdown>
-                </strong>
-              </p>
-            </div>
-          ) : (
-            <Fragment>
-              <h6>Update the item prices</h6>
-              <button
-                className="btn-large waves-effect waves-light  red lighten-2"
-                onClick={updatePrices}
-              >
-                <b>
-                  Update
-                  <i className="material-icons right">update</i>
-                </b>
-              </button>
-              <br></br>
-              <small>
+  return (
+    <div className=" row  col s4">
+      <div className="items-update-prices">
+        {invetoryStatus.price_status === "processing" ? (
+          <div>
+            <h5>Pirces are still processing</h5>
+            <p>
+              {" "}
+              Start time at:{" "}
+              <Moment format="MMMM Do YYYY, h:mm:ss a">
+                {invetoryStatus.price_update_start_time}
+              </Moment>{" "}
+            </p>
+            <p>
+              {" "}
+              End time aprox at:{" "}
+              <Moment format="MMMM Do YYYY, h:mm:ss a">
+                {invetoryStatus.price_update_end_time}
+              </Moment>
+            </p>
+
+            <p>
+              Total Items scanned aprox:{" "}
+              <strong className="red-color-text">
+                <Countdown
+                  intervalDelay={3000}
+                  precision={3}
+                  date={Date.now() + diff_end * 1000}
+                  renderer={(props) => (
+                    <span>
+                      {Math.round(
+                        (invetoryStatus.total_items * 3 -
+                          Math.round(props.total / 1000)) /
+                          3
+                      )}
+                    </span>
+                  )}
+                />
+              </strong>
+            </p>
+            <p>
+              EST:{" "}
+              <strong className="red-color-text">
                 {" "}
-                Last update at:{" "}
-                <Moment format="MMMM Do YYYY, h:mm:ss a">
-                  {invetoryStatus.price_update_end_time}
-                </Moment>
-              </small>
-            </Fragment>
-          )}
-        </div>
+                <Countdown date={diff_end * 1000 + current_server_time}>
+                  <span>You are good to go!</span>
+                </Countdown>
+              </strong>
+            </p>
+          </div>
+        ) : (
+          <Fragment>
+            <h6>Update the item prices</h6>
+            <button
+              className="btn-large waves-effect waves-light  red lighten-1"
+              onClick={updatePrices}
+            >
+              <b>
+                Update
+                <i className="material-icons right">update</i>
+              </b>
+            </button>
+            <br></br>
+            <small>
+              {" "}
+              Last update at:{" "}
+              <Moment format="MMMM Do YYYY, h:mm:ss a">
+                {invetoryStatus.price_update_end_time}
+              </Moment>
+            </small>
+          </Fragment>
+        )}
       </div>
     </div>
   );

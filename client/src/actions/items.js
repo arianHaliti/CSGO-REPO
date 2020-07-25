@@ -4,11 +4,17 @@ import {
   GET_ITEMS,
   ERROR_ITEM,
   GET_STATUS_PRICE,
+  SET_LOADING_ITEM,
 } from "./types";
 
-export const getItems = () => async (dispatch) => {
+export const getItems = (filter = null) => async (dispatch) => {
   try {
-    const res = await axios.get("/api/items/items");
+    setLoading();
+    console.log(filter);
+    const res = await axios.get("/api/items/items", {
+      params: filter,
+    });
+    console.log("GETITEMS");
     dispatch({
       type: GET_ITEMS,
       payload: res.data,
@@ -55,4 +61,11 @@ export const getUpdatePriceStatus = () => async (dispatch) => {
       payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
+};
+
+export const setLoading = () => {
+  console.log("lol");
+  return {
+    type: SET_LOADING_ITEM,
+  };
 };

@@ -17,11 +17,11 @@ const InventoryStatusSchema = new Schema({
   },
   total_items: {
     type: Number,
-    // required: true,
+    required: true,
   },
   timeout_time: {
     type: Number,
-    // required: true,
+    required: true,
   },
   created_at: {
     type: Date,
