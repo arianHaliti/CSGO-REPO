@@ -8,6 +8,8 @@ const Item = require("../../models/Item");
 // @desc    Gets Items
 // @access  Public
 router.get("/items", async (req, res) => {
+  console.log("geting");
+
   let params = req.query;
   if (params.name) {
   }

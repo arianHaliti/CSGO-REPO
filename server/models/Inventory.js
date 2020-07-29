@@ -5,6 +5,11 @@ const InventorySchema = new Schema(
   {
     items: [
       {
+        itemid: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          ref: "Item",
+        },
         item: {
           type: String,
         },
@@ -19,7 +24,7 @@ const InventorySchema = new Schema(
         },
         active: {
           type: Boolean,
-          required: true,
+          // required: true,
         },
       },
     ],
@@ -40,15 +45,10 @@ const InventorySchema = new Schema(
   },
   { toJSON: { virtuals: true } }
 );
-InventorySchema.virtual("item", {
+InventorySchema.virtual("item_list", {
   ref: "items",
-  localField: "item",
+  localField: "items.itemid",
   foreignField: "_id",
-});
-InventorySchema.virtual("prices", {
-  ref: "price",
-  localField: "name",
-  foreignField: "name",
 });
 Inventory = mongoose.model("inventories", InventorySchema);
 

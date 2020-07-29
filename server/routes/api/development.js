@@ -200,7 +200,7 @@ router.get("/_items", async (req, res) => {
   //   }
   // );
 
-  let body = require("./inv4.json");
+  let body = require("./inv3.json");
 
   let assets = body.assets;
   let desc = body.descriptions;
@@ -225,10 +225,10 @@ router.get("/_items", async (req, res) => {
     };
 
     // Check if item exist in DB
-    let dbItem = await Item.find({ name: item.name });
+    let dbItem = await Item.find({ market_hash_name: item.market_hash_name });
 
     if (dbItem.length !== 0) {
-      console.log("Item is Already in  DB : ", item.name);
+      console.log("Item is Already in  DB : ", item.market_hash_name);
       console.log("\x1b[33m%s\x1b[0m", dbItem[0].id);
     } else {
       // Get Rarity

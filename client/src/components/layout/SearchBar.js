@@ -9,10 +9,9 @@ const SearchBar = ({ props }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setToInventory(true);
-    console.log(search);
   };
   return toInvetory ? (
-    <Redirect to="/items" />
+    <Redirect to={"/inventory/get/" + search} />
   ) : (
     <nav className="center grey darken-3" style={{ marginTop: "111px" }}>
       <h3>Search your inventory with your steam name or steam ID</h3>
