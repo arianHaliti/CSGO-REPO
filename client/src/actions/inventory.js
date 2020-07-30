@@ -12,9 +12,11 @@ export const getInventory = (filter = null) => async (dispatch) => {
 
     // const insert = await axios.get('/invetory')
 
-    const update = await axios.get("/inventory/update/:id");
+    // const update = await axios.get("/inventory/update/:id");
 
-    const res = await axios.get("/inventory/get/:id", {
+    //WORK HERE
+    console.log(filter);
+    const res = await axios.get("/inventory/get/", {
       params: filter,
     });
 

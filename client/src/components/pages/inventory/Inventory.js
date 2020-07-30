@@ -15,6 +15,7 @@ const Inventory = ({
   },
 }) => {
   useEffect(() => {
+    //WORK HERE
     getInventory();
     // eslint-disable-next-line
   }, []);

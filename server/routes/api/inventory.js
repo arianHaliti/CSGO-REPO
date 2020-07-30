@@ -16,6 +16,8 @@ const e = require("express");
 // @access  public
 router.post("/update/:id", async (req, res) => {
   // let body = require("./inv3.json");
+  let client = req.params.id;
+
   request(
     "https://steamcommunity.com/inventory/76561198005755459/730/2?l=english&count=5000",
     async (e, r, body) => {
@@ -79,6 +81,7 @@ router.post("/update/:id", async (req, res) => {
         totalCount: countItems,
         totalPrice: 0,
       };
+      let oldInventory = Inventory.findOne({ steamid: {} });
       let newInvetory = new Inventory(inventory);
       await newInvetory.save();
 
@@ -92,11 +95,11 @@ router.post("/update/:id", async (req, res) => {
 // @desc    Gets Status of inventory update
 // @access  Private
 router.get("/get/:id", async (req, res) => {
-  console.log("called");
-
+  //WORK HERE
   let client = req.params.id;
 
-  let items = await Inventory.findOne({ _id: "5f20155fdfa840037052d3b8" })
+  console.log(client);
+  let items = await Inventory.findOne({ steamid: client })
     .populate("item_list")
     .populate({
       path: "item_list",
