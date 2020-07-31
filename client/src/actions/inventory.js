@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setAlert } from "./alert";
 import {
   UPDATE_INVENTORY,
   GET_INVENTORY,
@@ -6,17 +7,21 @@ import {
   SET_LOADING_INVENTORY,
 } from "./types";
 
-export const getInventory = (filter = null) => async (dispatch) => {
+export const getInventory = (filter) => async (dispatch) => {
   try {
     setLoading();
-
+    var pageURL = window.location.href;
+    var lastURLSegment = pageURL.substr(pageURL.lastIndexOf("/") + 1);
     // const insert = await axios.get('/invetory')
 
-    // const update = await axios.get("/inventory/update/:id");
+    const update = await axios.post(`/inventory/update/${lastURLSegment}`);
 
+    if (update.data.error) {
+      dispatch(setAlert(update.data.error, "danger", false));
+    }
     //WORK HERE
     console.log(filter);
-    const res = await axios.get("/inventory/get/", {
+    const res = await axios.get("/inventory/get", {
       params: filter,
     });
 

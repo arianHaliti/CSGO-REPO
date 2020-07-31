@@ -11,14 +11,12 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
   if (invetoryStatus.length === 0) {
     return <PreloaderCircle />;
   }
-  let diff = 0;
   let diff_end = 0;
+  let timeout = 3;
   let current_server_time = Date.now();
   if (invetoryStatus.price_status === "processing") {
     let current_server_time = moment(Date.now());
-    let prices_start = moment(invetoryStatus.price_update_start_time);
     let price_end = moment(invetoryStatus.price_update_end_time);
-    diff = current_server_time.diff(prices_start, "seconds");
     diff_end = price_end.diff(current_server_time, "seconds");
   }
 
@@ -47,15 +45,15 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
               Total Items scanned aprox:{" "}
               <strong className="red-color-text">
                 <Countdown
-                  intervalDelay={3000}
-                  precision={3}
+                  intervalDelay={timeout * 1000}
+                  precision={timeout}
                   date={Date.now() + diff_end * 1000}
                   renderer={(props) => (
                     <span>
                       {Math.round(
-                        (invetoryStatus.total_items * 3 -
+                        (invetoryStatus.total_items * timeout -
                           Math.round(props.total / 1000)) /
-                          3
+                          timeout
                       )}
                     </span>
                   )}

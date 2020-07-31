@@ -11,7 +11,7 @@ const SearchBar = ({ props }) => {
     setToInventory(true);
   };
   return toInvetory ? (
-    <Redirect to={"/inventory/get/" + search} />
+    <Redirect to={{ pathname: "/inventory/get", state: { search } }} />
   ) : (
     <nav className="center grey darken-3" style={{ marginTop: "111px" }}>
       <h3>Search your inventory with your steam name or steam ID</h3>

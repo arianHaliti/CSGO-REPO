@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { getInventory } from "../../../actions/inventory";
 
 const Inventory = ({
+  location,
   getInventory,
   inventory: {
     loading,
@@ -15,8 +16,7 @@ const Inventory = ({
   },
 }) => {
   useEffect(() => {
-    //WORK HERE
-    getInventory();
+    getInventory({ id: location.state.search });
     // eslint-disable-next-line
   }, []);
 
@@ -26,7 +26,9 @@ const Inventory = ({
   return (
     <Fragment>
       <div className="row">
-        {!loading && item_list.length === 0 ? (
+        {!loading && item_list == null ? (
+          <p className="center">Could not find player...</p>
+        ) : !loading && item_list.length === 0 ? (
           <p className="center">No items found...</p>
         ) : (
           item_list.map((item) => <ItemSingle item={item} key={item._id} />)
