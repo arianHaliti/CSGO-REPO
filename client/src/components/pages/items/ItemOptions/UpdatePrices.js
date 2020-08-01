@@ -90,6 +90,14 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
                 {invetoryStatus.price_update_end_time}
               </Moment>
             </small>
+            <br></br>
+            <small>
+              {" "}
+              Next Update ETA:{" "}
+              {moment("1900-01-01 00:00:00")
+                .add(timeout * invetoryStatus.total_items, "seconds")
+                .format("HH:mm:ss")}
+            </small>
           </Fragment>
         )}
       </div>

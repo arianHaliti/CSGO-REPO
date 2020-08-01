@@ -10,24 +10,32 @@ import {
 export const getInventory = (filter) => async (dispatch) => {
   try {
     setLoading();
-    var pageURL = window.location.href;
-    var lastURLSegment = pageURL.substr(pageURL.lastIndexOf("/") + 1);
-    // const insert = await axios.get('/invetory')
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-    const update = await axios.post(`/inventory/update/${lastURLSegment}`);
+    const insert = await axios.post("/inventory", filter, config);
 
-    if (update.data.error) {
-      dispatch(setAlert(update.data.error, "danger", false));
+    if (insert.data.error) {
+      dispatch(setAlert(insert.data.error, "danger", true));
+      return;
     }
-    //WORK HERE
-    console.log(filter);
-    const res = await axios.get("/inventory/get", {
-      params: filter,
-    });
+    // console.log(filter);
+    // const update = await axios.post("/inventory/update", filter, config);
 
+    // if (update.data.error) {
+    //   dispatch(setAlert(update.data.error, "danger", true));
+    // }
+    // const res = await axios.get("/inventory/get", {
+    //   params: filter,
+    // });
+
+    console.log(insert);
     dispatch({
       type: GET_INVENTORY,
-      payload: res.data,
+      payload: insert.data,
     });
   } catch (err) {
     console.log("Error at getInventory", err);

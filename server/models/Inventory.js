@@ -34,6 +34,9 @@ const InventorySchema = new Schema(
     totalPrice: {
       type: Number,
     },
+    steamid: {
+      type: String,
+    },
     created_at: {
       type: Date,
       default: Date.now(),

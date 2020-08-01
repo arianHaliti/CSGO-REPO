@@ -13,9 +13,9 @@ const ItemSingle = ({ item }) => {
     diff = (((current - before) / current) * 100).toFixed(2);
 
   const diffColor =
-    diff === 0 || isNaN(diff) ? "#ffffff" : diff > 0 ? "#00c853 " : "#ff5722 ";
+    diff == 0 || isNaN(diff) ? "#ffffff" : diff > 0 ? "#00c853 " : "#ff5722 ";
   const diffIcon =
-    diff === 0 || isNaN(diff)
+    diff == 0 || isNaN(diff)
       ? "trending_flat"
       : diff > 0
       ? "trending_upf "
