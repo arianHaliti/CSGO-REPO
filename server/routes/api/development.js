@@ -319,4 +319,100 @@ router.get("/_prices_status", async (req, res) => {
   }
 });
 
+// @route   GET api/development/inventory
+// @desc    Gets Status of inventory update
+// @access  Private
+router.get("/inventory/get", async (req, res) => {
+  // let client = req.query.id;
+  // let response = await findClient(client);
+
+  // if (response.status) {
+  client = "76561198069559601";
+
+  let items = await Inventory.aggregate([
+    {
+      $match: {
+        steamid: client,
+      },
+    },
+    { $project: { _id: 0, items: 1 } },
+    {
+      $limit: 1,
+    },
+    { $sort: { created_at: -1 } },
+    { $unwind: "$items" },
+    {
+      $lookup: {
+        from: "items", // collection name in db
+        localField: "items.itemid",
+        foreignField: "_id",
+        as: "items_info",
+      },
+    },
+    { $unwind: "$items_info" },
+    {
+      $lookup: {
+        from: "prices", // collection name in db
+        localField: "items_info._id",
+        foreignField: "itemid",
+        as: "price_list",
+      },
+    },
+
+    {
+      $lookup: {
+        from: "rarities", // collection name in db
+        localField: "items_info.rarity",
+        foreignField: "_id",
+        as: "rarity_type",
+      },
+    },
+  ]);
+
+  additional = {
+    totalCount: items.length,
+    client,
+  };
+
+  let total = 0;
+  for (let i = 0; i < items.length; i++) {
+    console.log(items[i].items_info.market_hash_name);
+    console.log("~~~~~~~~~~~");
+    console.log(
+      typeof (items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0) == "undefined"
+        ? 0
+        : items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0,
+      items[i].items.count
+    );
+    console.log(
+      typeof (items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0) == "undefined"
+        ? 0
+        : items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0 * items[i].items.count
+    );
+    console.log(total);
+
+    total +=
+      items[i].items.count *
+      (typeof (items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0) == "undefined"
+        ? 0
+        : items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0);
+  }
+  res.send({ items, additional, total });
+  // } else {
+  //   res.send([]);
+  // }
+});
+
 module.exports = router;

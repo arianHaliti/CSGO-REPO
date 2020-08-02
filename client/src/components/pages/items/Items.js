@@ -35,7 +35,14 @@ const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
         {!loading && items.length === 0 ? (
           <p className="center">No items found...</p>
         ) : (
-          items.map((item) => <ItemSingle item={item} key={item._id} />)
+          items.map((item) => (
+            <ItemSingle
+              items={item}
+              prices={item.price_list}
+              rarity={item.rarity_type}
+              key={item._id}
+            />
+          ))
         )}
       </div>
     </Fragment>

@@ -22,15 +22,6 @@ export const getInventory = (filter) => async (dispatch) => {
       dispatch(setAlert(insert.data.error, "danger", true));
       return;
     }
-    // console.log(filter);
-    // const update = await axios.post("/inventory/update", filter, config);
-
-    // if (update.data.error) {
-    //   dispatch(setAlert(update.data.error, "danger", true));
-    // }
-    // const res = await axios.get("/inventory/get", {
-    //   params: filter,
-    // });
 
     console.log(insert);
     dispatch({

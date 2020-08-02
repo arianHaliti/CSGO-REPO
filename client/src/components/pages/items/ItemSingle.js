@@ -1,11 +1,10 @@
 import React from "react";
 
-const ItemSingle = ({ item }) => {
-  const current =
-    item.price_list.length > 0 ? item.price_list[0].prices[0].price : 0.0;
+const ItemSingle = ({ items, prices, rarity }) => {
+  const current = prices.length > 0 ? prices[0].prices[0].price : 0.0;
   const before =
-    item.price_list.length > 0 && item.price_list[0].prices.length > 1
-      ? item.price_list[0].prices[1].price
+    prices.length > 0 && prices[0].prices.length > 1
+      ? prices[0].prices[1].price
       : 0.0;
 
   let diff = 0;
@@ -26,29 +25,25 @@ const ItemSingle = ({ item }) => {
       style={{ marginRight: "3px", width: "24%" }}
     >
       <a
-        href={`https://steamcommunity.com/market/listings/730/${item.market_hash_name}`}
+        href={`https://steamcommunity.com/market/listings/730/${items.market_hash_name}`}
         target="_blank"
         style={{
-          color:
-            "#" +
-            (item.rarity_type.length > 0
-              ? item.rarity_type[0].rarity_color
-              : ""),
+          color: "#" + (rarity.length > 0 ? rarity[0].rarity_color : ""),
         }}
       >
         <div className="card-content center">
           <img
             className="activator"
-            alt={item.icon}
+            alt={items.icon}
             style={{ width: "200px", height: "200px" }}
             src={
               "https://steamcommunity-a.akamaihd.net/economy/image/" +
-              (item.large_icon ? item.large_icon : item.icon)
+              (items.large_icon ? items.large_icon : items.icon)
             }
           />
         </div>
         <div className="center truncate #ee6e73">
-          <strong>{item.name}</strong>
+          <strong>{items.name}</strong>
         </div>
       </a>
       <div className="card-tabs ">

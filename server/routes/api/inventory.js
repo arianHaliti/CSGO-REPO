@@ -101,7 +101,7 @@ router.post("/", async (req, res) => {
 
         items.push(item);
       }
-      let update = await updateInventory(client, body);
+      // await updateInventory(client, body);
       let getInventory = await getInventoryItems(client);
       // itemsAdded = items.length;
       // let response = { getInventory };
@@ -293,18 +293,90 @@ const updateInventory = async (client, body) => {
 };
 
 const getInventoryItems = async (client) => {
-  let items = await Inventory.findOne({ steamid: client })
-    .sort({ created_at: -1 })
-    .populate("item_list")
-    .populate({
-      path: "item_list",
-      populate: { path: "price_list", model: "prices" },
-    })
-    .populate({
-      path: "item_list",
-      populate: { path: "rarity_type", model: "rarities" },
-    });
-  items.items = null;
-  return items;
+  let total = 0;
+  let items = await Inventory.aggregate([
+    {
+      $match: {
+        steamid: client,
+      },
+    },
+    { $project: { _id: 0, items: 1 } },
+    {
+      $limit: 1,
+    },
+    { $sort: { created_at: -1 } },
+    { $unwind: "$items" },
+    {
+      $lookup: {
+        from: "items", // collection name in db
+        localField: "items.itemid",
+        foreignField: "_id",
+        as: "items_info",
+      },
+    },
+    { $unwind: "$items_info" },
+    {
+      $lookup: {
+        from: "prices", // collection name in db
+        localField: "items_info._id",
+        foreignField: "itemid",
+        as: "price_list",
+      },
+    },
+
+    {
+      $lookup: {
+        from: "rarities", // collection name in db
+        localField: "items_info.rarity",
+        foreignField: "_id",
+        as: "rarity_type",
+      },
+    },
+  ]);
+
+  additional = {
+    totalCount: items.length,
+    client,
+  };
+  for (let i = 0; i < items.length; i++) {
+    console.log(items[i].items_info.market_hash_name);
+    console.log("~~~~~~~~~~~");
+    console.log(
+      typeof (items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0) == "undefined"
+        ? 0
+        : items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0,
+      items[i].items.count
+    );
+    console.log(
+      typeof (items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0) == "undefined"
+        ? 0
+        : items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0 * items[i].items.count
+    );
+    console.log(total);
+
+    total +=
+      items[i].items.count *
+      (typeof (items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0) == "undefined"
+        ? 0
+        : items[i].price_list.length > 0
+        ? items[i].price_list[0].last_price
+        : 0);
+  }
+  let update = await Inventory.findOne({ steamid: client }).sort({
+    created_at: -1,
+  });
+  update.totalPrice = total;
+  await update.save();
+  return { items, additional, total };
 };
 module.exports = router;
