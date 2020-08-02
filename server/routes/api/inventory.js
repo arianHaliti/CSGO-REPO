@@ -101,7 +101,7 @@ router.post("/", async (req, res) => {
 
         items.push(item);
       }
-      // await updateInventory(client, body);
+      await updateInventory(client, body);
       let getInventory = await getInventoryItems(client);
       // itemsAdded = items.length;
       // let response = { getInventory };
@@ -339,29 +339,6 @@ const getInventoryItems = async (client) => {
     client,
   };
   for (let i = 0; i < items.length; i++) {
-    console.log(items[i].items_info.market_hash_name);
-    console.log("~~~~~~~~~~~");
-    console.log(
-      typeof (items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0) == "undefined"
-        ? 0
-        : items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0,
-      items[i].items.count
-    );
-    console.log(
-      typeof (items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0) == "undefined"
-        ? 0
-        : items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0 * items[i].items.count
-    );
-    console.log(total);
-
     total +=
       items[i].items.count *
       (typeof (items[i].price_list.length > 0

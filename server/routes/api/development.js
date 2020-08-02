@@ -322,7 +322,7 @@ router.get("/_prices_status", async (req, res) => {
 // @route   GET api/development/inventory
 // @desc    Gets Status of inventory update
 // @access  Private
-router.get("/inventory/get", async (req, res) => {
+router.post("/inventory/get", async (req, res) => {
   // let client = req.query.id;
   // let response = await findClient(client);
 

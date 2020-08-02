@@ -12,7 +12,7 @@ const Inventory = ({
   getInventory,
   inventory: {
     loading,
-    inv: { items, totalCount },
+    inv: { items, totalCount, total },
   },
 }) => {
   useEffect(() => {
@@ -31,14 +31,22 @@ const Inventory = ({
         ) : !loading && items.length === 0 ? (
           <p className="center">No items found...</p>
         ) : (
-          items.map((item) => (
-            <ItemSingle
-              items={item.items_info}
-              prices={item.price_list}
-              rarity={item.rarity_type}
-              key={item.items.itemid}
-            />
-          ))
+          <Fragment>
+            <div>
+              <h4>
+                Total Inventory value:{" "}
+                <span className="red-color-text">{total.toFixed(2)}</span>€
+              </h4>
+            </div>
+            {items.map((item) => (
+              <ItemSingle
+                items={item.items_info}
+                prices={item.price_list}
+                rarity={item.rarity_type}
+                key={item.items.itemid}
+              />
+            ))}
+          </Fragment>
         )}
       </div>
     </Fragment>
