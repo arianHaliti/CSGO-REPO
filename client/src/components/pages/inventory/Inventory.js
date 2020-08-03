@@ -43,6 +43,7 @@ const Inventory = ({
                 items={item.items_info}
                 prices={item.price_list}
                 rarity={item.rarity_type}
+                additional={item.items}
                 key={item.items.itemid}
               />
             ))}

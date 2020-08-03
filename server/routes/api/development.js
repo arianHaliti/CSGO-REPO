@@ -376,29 +376,6 @@ router.post("/inventory/get", async (req, res) => {
 
   let total = 0;
   for (let i = 0; i < items.length; i++) {
-    console.log(items[i].items_info.market_hash_name);
-    console.log("~~~~~~~~~~~");
-    console.log(
-      typeof (items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0) == "undefined"
-        ? 0
-        : items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0,
-      items[i].items.count
-    );
-    console.log(
-      typeof (items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0) == "undefined"
-        ? 0
-        : items[i].price_list.length > 0
-        ? items[i].price_list[0].last_price
-        : 0 * items[i].items.count
-    );
-    console.log(total);
-
     total +=
       items[i].items.count *
       (typeof (items[i].price_list.length > 0

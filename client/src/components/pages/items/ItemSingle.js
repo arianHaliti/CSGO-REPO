@@ -1,6 +1,6 @@
 import React from "react";
 
-const ItemSingle = ({ items, prices, rarity }) => {
+const ItemSingle = ({ items, prices, rarity, additional = null }) => {
   const current = prices.length > 0 ? prices[0].prices[0].price : 0.0;
   const before =
     prices.length > 0 && prices[0].prices.length > 1
@@ -44,6 +44,15 @@ const ItemSingle = ({ items, prices, rarity }) => {
         </div>
         <div className="center truncate #ee6e73">
           <strong>{items.name}</strong>
+          {additional != null ? (
+            <p>
+              <span style={{ color: "#b3e5fc", fontSize: 24 }}>
+                X {additional.count}
+              </span>
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       </a>
       <div className="card-tabs ">
@@ -82,6 +91,15 @@ const ItemSingle = ({ items, prices, rarity }) => {
             {" " + before + " €"}
           </span>
         </div>
+        {additional != null ? (
+          <div id="test6">
+            <span style={{ color: "#00c853", fontSize: 24 }}>
+              Total: {(additional.count * current).toFixed(2) + " €"}
+            </span>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

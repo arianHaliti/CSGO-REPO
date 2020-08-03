@@ -16,6 +16,11 @@ export const getInventory = (filter) => async (dispatch) => {
       },
     };
 
+    // const insert = await axios.post(
+    //   "/api/development/inventory/get",
+    //   filter,
+    //   config
+    // );
     const insert = await axios.post("/inventory", filter, config);
 
     if (insert.data.error) {
