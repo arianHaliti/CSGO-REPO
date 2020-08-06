@@ -222,3 +222,11 @@ ul {
   background-color: #343a40 !important;
   color: #ee6e73 !important;
 }
+
+.logo-img {
+  width: 250px;
+}
+
+.brand-logo-name {
+  padding-top: 13px !important;
+}

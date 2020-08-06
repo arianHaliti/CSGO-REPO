@@ -7,10 +7,15 @@ const Navbar = ({ title, icon }) => {
     <div className="navbar-fixed" style={{ marginBottom: "65px" }}>
       <nav>
         <div className="nav-wrapper #263238 blue-grey darken-4">
-          <a href="/#" className="brand-logo ">
-            <i className="material-icons left">blur_circular</i> CSGO REPO
-          </a>
-
+          <Link to="/">
+            <img
+              className="logo-img"
+              src={require("../../assets/csgo-repo.png")}
+            />
+          </Link>
+          <Link to="/" className="brand-logo brand-logo-name">
+            CS REPO
+          </Link>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>
               <Link to="/">Home</Link>
