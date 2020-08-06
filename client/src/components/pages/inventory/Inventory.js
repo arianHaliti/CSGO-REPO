@@ -3,28 +3,41 @@ import ItemSingle from "../items/ItemSingle";
 import Preloader from "../../layout/Preloader";
 import PreloaderCircle from "../../layout/PreloaderCricle";
 import PropTypes from "prop-types";
+import AddBtnFilter from "../items/ItemOptions/AddBtnFilter";
+import UpdateInvetoryBtn from "./InventoryOptions/UpdateInventory";
 //redux
 import { connect } from "react-redux";
-import { getInventory } from "../../../actions/inventory";
+import { getInventory, updateInventory } from "../../../actions/inventory";
 
 const Inventory = ({
   location,
   getInventory,
   inventory: {
     loading,
-    inv: { items, totalCount, total },
+    inv: { items, totalCount, total, additional },
   },
 }) => {
   useEffect(() => {
     getInventory({ id: location.state.search });
     // eslint-disable-next-line
   }, []);
-
+  // LOAD BUTTON needs work
   if (loading) {
     return <Preloader />;
   }
   return (
     <Fragment>
+      {!loading && items != null ? (
+        <div className="items-above-section row">
+          <UpdateInvetoryBtn
+            updateInventory={updateInventory}
+            client={additional.client}
+          />
+          <AddBtnFilter />
+        </div>
+      ) : (
+        <PreloaderCircle />
+      )}
       <div className="row">
         {!loading && items == null ? (
           <p className="center">Could not find player...</p>
@@ -56,9 +69,12 @@ const Inventory = ({
 
 Inventory.propTypes = {
   getInventory: PropTypes.func.isRequired,
+  updateInventory: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   inventory: state.inventory,
 });
-export default connect(mapStateToProps, { getInventory })(Inventory);
+export default connect(mapStateToProps, { getInventory, updateInventory })(
+  Inventory
+);

@@ -327,7 +327,9 @@ router.post("/inventory/get", async (req, res) => {
   // let response = await findClient(client);
 
   // if (response.status) {
-  client = "76561198069559601";
+
+  // needs Work
+  client = "76561198139880065";
 
   let items = await Inventory.aggregate([
     {

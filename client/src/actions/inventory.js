@@ -16,19 +16,18 @@ export const getInventory = (filter) => async (dispatch) => {
       },
     };
 
-    // const insert = await axios.post(
-    //   "/api/development/inventory/get",
-    //   filter,
-    //   config
-    // );
-    const insert = await axios.post("/inventory", filter, config);
+    const insert = await axios.post(
+      "/api/development/inventory/get",
+      filter,
+      config
+    );
+    // const insert = await axios.post("/inventory", filter, config);
 
     if (insert.data.error) {
       dispatch(setAlert(insert.data.error, "danger", true));
       return;
     }
 
-    console.log(insert);
     dispatch({
       type: GET_INVENTORY,
       payload: insert.data,
@@ -41,6 +40,32 @@ export const getInventory = (filter) => async (dispatch) => {
     //   type: ERROR_INVENTORY,
     //   payload: { msg: err.response.statusText, status: err.response.status },
     // });
+  }
+};
+
+export const updateInventory = (filter) => async (dispatch) => {
+  try {
+    setLoading();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const insert = await axios.post("/inventory", filter, config);
+
+    if (insert.data.error) {
+      dispatch(setAlert(insert.data.error, "danger", true));
+      return;
+    }
+    // TYPE: UPDATE_INVETO needs work
+    dispatch({
+      type: GET_INVENTORY,
+      payload: insert.data,
+    });
+  } catch (err) {
+    console.log("Error at getInventory", err);
+    console.log(err);
   }
 };
 
