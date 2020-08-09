@@ -13,7 +13,7 @@ const { response } = require("express");
 const e = require("express");
 const axios = require("axios");
 
-// @route   POST api/development
+// @route   POST inventory/
 // @desc    Adds new Items
 // @access  Private
 router.post("/", async (req, res) => {
@@ -107,6 +107,83 @@ router.post("/", async (req, res) => {
       // let response = { getInventory };
       res.send(getInventory);
     }
+  }
+});
+
+// @route   GET /inventory/get
+// @desc    Gets Status of inventory update
+// @access  Private
+router.post("/get", async (req, res) => {
+  console.log(req.body.id);
+  let client = req.body.id;
+  let response = await findClient(client);
+
+  console.log(client);
+  if (response.status) {
+    // client = "76561198139880065";
+
+    let user = await User.findOne({ steamid: client });
+
+    let items = await Inventory.aggregate([
+      {
+        $match: {
+          steamid: client,
+        },
+      },
+      { $project: { _id: 0, items: 1 } },
+      {
+        $limit: 1,
+      },
+      { $sort: { created_at: -1 } },
+      { $unwind: "$items" },
+      {
+        $lookup: {
+          from: "items", // collection name in db
+          localField: "items.itemid",
+          foreignField: "_id",
+          as: "items_info",
+        },
+      },
+      { $unwind: "$items_info" },
+      {
+        $lookup: {
+          from: "prices", // collection name in db
+          localField: "items_info._id",
+          foreignField: "itemid",
+          as: "price_list",
+        },
+      },
+
+      {
+        $lookup: {
+          from: "rarities", // collection name in db
+          localField: "items_info.rarity",
+          foreignField: "_id",
+          as: "rarity_type",
+        },
+      },
+    ]);
+
+    additional = {
+      totalCount: items.length,
+      client,
+    };
+
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+      total +=
+        items[i].items.count *
+        (typeof (items[i].price_list.length > 0
+          ? items[i].price_list[0].last_price
+          : 0) == "undefined"
+          ? 0
+          : items[i].price_list.length > 0
+          ? items[i].price_list[0].last_price
+          : 0);
+    }
+    res.send({ items, additional, total, user });
+  } else {
+    res.send([]);
   }
 });
 
@@ -354,6 +431,8 @@ const getInventoryItems = async (client) => {
   });
   update.totalPrice = total;
   await update.save();
-  return { items, additional, total };
+
+  let user = await User.findOne({ steamid: client });
+  return { items, additional, total, user };
 };
 module.exports = router;

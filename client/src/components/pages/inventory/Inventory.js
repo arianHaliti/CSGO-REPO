@@ -14,7 +14,7 @@ const Inventory = ({
   getInventory,
   inventory: {
     loading,
-    inv: { items, totalCount, total, additional },
+    inv: { items, totalCount, total, additional, user },
   },
 }) => {
   useEffect(() => {
@@ -45,12 +45,24 @@ const Inventory = ({
           <p className="center">No items found...</p>
         ) : (
           <Fragment>
-            <div>
-              <h4>
-                Total Inventory value:{" "}
-                <span className="red-color-text">{total.toFixed(2)}</span>€
-              </h4>
+            <div className="row">
+              <div className="col s2 ">
+                <a href={user.profileurl} target="_blank">
+                  <img className="responsive-img" src={user.avatarfull}></img>
+                </a>
+              </div>
+              <div className="col s10">
+                <h5>
+                  Owner of Inventory{" "}
+                  <span className="red-color-text">{user.personaname}</span>
+                </h5>
+                <h4>
+                  Total Inventory value:{" "}
+                  <span className="red-color-text">{total.toFixed(2)}</span>€
+                </h4>
+              </div>
             </div>
+
             {items.map((item) => (
               <ItemSingle
                 items={item.items_info}

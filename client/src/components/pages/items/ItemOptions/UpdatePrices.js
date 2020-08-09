@@ -12,7 +12,7 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
     return <PreloaderCircle />;
   }
   let diff_end = 0;
-  let timeout = 3;
+  let timeout = 4;
   let current_server_time = Date.now();
   if (invetoryStatus.price_status === "processing") {
     let current_server_time = moment(Date.now());
@@ -98,6 +98,8 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
                 .add(timeout * invetoryStatus.total_items, "seconds")
                 .format("HH:mm:ss")}
             </small>
+            <br></br>
+            <small>{invetoryStatus.total_items} Items to be updated</small>
           </Fragment>
         )}
       </div>

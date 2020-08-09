@@ -9,18 +9,15 @@ import {
 
 export const getInventory = (filter) => async (dispatch) => {
   try {
-    setLoading();
+    dispatch(setLoading());
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
 
-    const insert = await axios.post(
-      "/api/development/inventory/get",
-      filter,
-      config
-    );
+    console.log(filter);
+    const insert = await axios.post("/inventory/get", filter, config);
     // const insert = await axios.post("/inventory", filter, config);
 
     if (insert.data.error) {
@@ -88,6 +85,7 @@ export const updateInventory = (filter) => async (dispatch) => {
 // };
 
 export const setLoading = () => {
+  console.log("loading");
   return {
     type: SET_LOADING_INVENTORY,
   };
