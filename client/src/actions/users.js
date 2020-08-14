@@ -3,7 +3,6 @@ import { GET_USERS, ERROR_USERS, SET_LOADING_USERS } from "./types";
 
 export const getUsers = (filter = null) => async (dispatch) => {
   try {
-    console.log("hello");
     dispatch(setLoading());
 
     const res = await axios.get("/api/users/users", {
