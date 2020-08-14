@@ -5,6 +5,7 @@ import Home from "./components/pages/Home";
 import Inventory from "./components/pages/inventory/Inventory";
 import Development from "./components/pages/dev/Development";
 import Items from "./components/pages/items/Items";
+import Users from "./components/pages/users/Users";
 import Alert from "./components/layout/Alert";
 import "materialize-css/dist/css/materialize.min.css";
 import M from "materialize-css/dist/js/materialize.min.js";
@@ -33,6 +34,7 @@ const App = () => {
               <Route path="/inventory/get" component={Inventory} />
               <Route exact path="/development" component={Development} />
               <Route exact path="/items" component={Items} />
+              <Route exact path="/users" component={Users} />
             </Switch>
           </div>
         </Fragment>
