@@ -193,7 +193,7 @@ router.post("/_rarities", (req, res) => {
 // @desc    Gets Prices of items
 // @access  Private
 router.post("/_prices", async (req, res) => {
-  let items = await Item.find({});
+  let items = await Item.find({ marketable: 1 });
   let time = 4000;
   const size = items.length;
   console.log(size, "ETA : " + (size * time) / 1000 + " s");
