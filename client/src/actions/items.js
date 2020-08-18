@@ -9,7 +9,7 @@ import {
 
 export const getItems = (filter = null) => async (dispatch) => {
   try {
-    setLoading();
+    dispatch(setLoading());
     console.log(filter);
     const res = await axios.get("/api/items/items", {
       params: filter,
@@ -24,13 +24,12 @@ export const getItems = (filter = null) => async (dispatch) => {
     console.log("Error at getItems", err);
     dispatch({
       type: ERROR_ITEM,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err },
     });
   }
 };
 
 export const updatePrices = () => async (dispatch) => {
-  console.log("HELLO");
   try {
     const res = await axios.post("/api/development/_prices");
     dispatch({
@@ -64,7 +63,6 @@ export const getUpdatePriceStatus = () => async (dispatch) => {
 };
 
 export const setLoading = () => {
-  console.log("lol");
   return {
     type: SET_LOADING_ITEM,
   };

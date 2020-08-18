@@ -5,6 +5,7 @@ import PreloaderCircle from "../../layout/PreloaderCricle";
 import PropTypes from "prop-types";
 import UpdatePrices from "./ItemOptions/UpdatePrices";
 import AddBtnFilter from "./ItemOptions/AddBtnFilter";
+import Pagination from "../../layout/Pagination";
 //redux
 import { connect } from "react-redux";
 import { getItems, updatePrices } from "../../../actions/items";
@@ -31,6 +32,7 @@ const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
       ) : (
         <PreloaderCircle />
       )}
+      <Pagination />
       <div className="row">
         {!loading && items.length === 0 ? (
           <p className="center">No items found...</p>
@@ -45,6 +47,7 @@ const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
           ))
         )}
       </div>
+      <Pagination />
     </Fragment>
   );
 };
