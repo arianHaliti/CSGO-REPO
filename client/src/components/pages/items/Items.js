@@ -10,7 +10,14 @@ import Pagination from "../../layout/Pagination";
 import { connect } from "react-redux";
 import { getItems, updatePrices } from "../../../actions/items";
 
-const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
+const Item = ({
+  getItems,
+  item: {
+    items: { items, additional },
+    loading,
+    invetoryStatus,
+  },
+}) => {
   useEffect(() => {
     getItems();
     // eslint-disable-next-line
@@ -32,22 +39,57 @@ const Item = ({ getItems, item: { items, loading, invetoryStatus } }) => {
       ) : (
         <PreloaderCircle />
       )}
-      <Pagination />
-      <div className="row">
-        {!loading && items.length === 0 ? (
+
+      {!loading && items.length === 0 ? (
+        <div>
           <p className="center">No items found...</p>
-        ) : (
-          items.map((item) => (
-            <ItemSingle
-              items={item}
-              prices={item.price_list}
-              rarity={item.rarity_type}
-              key={item._id}
-            />
-          ))
-        )}
-      </div>
-      <Pagination />
+          <a href="#!">
+            <i
+              onClick={() => getItems()}
+              className="material-icons large center-align"
+              style={{ display: "block" }}
+            >
+              refresh
+            </i>
+          </a>
+        </div>
+      ) : (
+        <Fragment>
+          <div>
+            {additional.params.name ? (
+              <p>
+                Search by keyword: `
+                <strong className="red-color-text">
+                  {additional.params.name}
+                </strong>
+                `
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
+          <Pagination
+            additional={additional}
+            params={additional.params}
+            getItems={getItems}
+          />
+          <div className="row">
+            {items.map((item) => (
+              <ItemSingle
+                items={item}
+                prices={item.price_list}
+                rarity={item.rarity_type}
+                key={item._id}
+              />
+            ))}
+          </div>
+          <Pagination
+            additional={additional}
+            params={additional.params}
+            getItems={getItems}
+          />
+        </Fragment>
+      )}
     </Fragment>
   );
 };

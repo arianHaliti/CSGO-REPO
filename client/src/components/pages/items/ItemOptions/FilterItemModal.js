@@ -8,13 +8,20 @@ import { getItems } from "../../../../actions/items";
 const FilterItemModal = ({ getItems }) => {
   const [name, setName] = useState("");
   const [order, setOrder] = useState("");
+  // Checkboxes
+  const [contraband, setContraband] = useState(true);
+  const [covert, setCovert] = useState(true);
+  const [classified, setClassified] = useState(true);
+  const [restricted, setRestricted] = useState(true);
+  const [milspec, setMilspec] = useState(true);
+  const [industrial, setIndustrial] = useState(true);
+  const [consumer, setConsumer] = useState(true);
 
   const onSubmit = () => {
     let filter = {
       name,
       order,
     };
-    console.log("hel");
     getItems(filter);
   };
   return (
@@ -52,14 +59,87 @@ const FilterItemModal = ({ getItems }) => {
             </select>
           </div>
         </div>
+        <form action="#">
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                checked={contraband}
+                onChange={(e) => setContraband(e.target.value)}
+              />
+              <span className="amber-text darken-3">Contraband</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                checked={covert}
+                onChange={(e) => setCovert(e.target.value)}
+              />
+              <span className="red-text darken-4">Covert</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                checked={classified}
+                onChange={(e) => setClassified(e.target.value)}
+              />
+              <span className="pink-text darken-3">Classified</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                checked={restricted}
+                onChange={(e) => setRestricted(e.target.value)}
+              />
+              <span className="purple-text darken-4">Restricted</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                checked={milspec}
+                onChange={(e) => setMilspec(e.target.value)}
+              />
+              <span className="blue-text darken-4">Mil-Spec</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                checked={industrial}
+                onChange={(e) => setIndustrial(e.target.value)}
+              />
+              <span className="blue-text lighten-3">Industrial Grade</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                type="checkbox"
+                checked={consumer}
+                onChange={(e) => setConsumer(e.target.value)}
+              />
+              <span className="blue-lighten-5-text ">Consumer Grade</span>
+            </label>
+          </p>
+        </form>
       </div>
+
       <div className="modal-footer modal-default">
         <a
           href="#!"
           onClick={onSubmit}
           className="modal-close waves-effect wave-green btn-flat modal-default"
         >
-          Enter
+          SORT
         </a>
       </div>
     </div>

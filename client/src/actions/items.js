@@ -14,7 +14,6 @@ export const getItems = (filter = null) => async (dispatch) => {
     const res = await axios.get("/api/items/items", {
       params: filter,
     });
-    console.log("GETITEMS");
     dispatch({
       type: GET_ITEMS,
       payload: res.data,
@@ -24,7 +23,7 @@ export const getItems = (filter = null) => async (dispatch) => {
     console.log("Error at getItems", err);
     dispatch({
       type: ERROR_ITEM,
-      payload: { msg: err },
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };

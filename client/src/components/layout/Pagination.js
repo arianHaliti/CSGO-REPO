@@ -1,28 +1,51 @@
 import React from "react";
 
-const Pagination = (itemPerPage, totalItems) => {
+const Pagination = ({
+  additional: { page, itemperpage, skip, count, params },
+  getItems,
+}) => {
   const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(totalItems / itemPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(count / itemperpage); i++) {
     pageNumbers.push(i);
   }
   return (
     <div>
-      <ul class="pagination center">
-        <li class="disabled">
-          <a href="#!">
-            <i class="material-icons">chevron_left</i>
+      <ul className="pagination center">
+        <li className={page === 1 ? "disabled " : "active"}>
+          <a
+            href="#!"
+            onClick={() => {
+              params.page = --page;
+              getItems(params);
+            }}
+          >
+            <i className="material-icons">chevron_left</i>
           </a>
         </li>
         {pageNumbers.map((number) => (
-          <li class="active">
-            <a href="#!">{number}</a>
+          <li className={number === page ? "active" : ""} key={number}>
+            <a
+              href="#!"
+              onClick={() => {
+                params.page = number;
+                getItems(params);
+              }}
+            >
+              {number}
+            </a>
           </li>
         ))}
 
-        <li class="waves-effect">
-          <a href="#!">
-            <i class="material-icons">chevron_right</i>
+        <li className={page === pageNumbers.length ? "disabled" : "active"}>
+          <a
+            href="#!"
+            onClick={() => {
+              params.page = ++page;
+              getItems(params);
+            }}
+          >
+            <i className="material-icons">chevron_right</i>
           </a>
         </li>
       </ul>
