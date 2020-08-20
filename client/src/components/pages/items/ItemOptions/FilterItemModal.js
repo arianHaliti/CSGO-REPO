@@ -8,7 +8,7 @@ import { getItems } from "../../../../actions/items";
 const FilterItemModal = ({ getItems }) => {
   const [name, setName] = useState("");
   const [order, setOrder] = useState("");
-  // Checkboxes
+  // Checkboxes need fix
   const [contraband, setContraband] = useState(true);
   const [covert, setCovert] = useState(true);
   const [classified, setClassified] = useState(true);
@@ -17,10 +17,27 @@ const FilterItemModal = ({ getItems }) => {
   const [industrial, setIndustrial] = useState(true);
   const [consumer, setConsumer] = useState(true);
 
+  const setContrabandClick = () => setContraband(!contraband);
+  const setCovertClick = () => setCovert(!covert);
+  const setClassifiedClick = () => setClassified(!classified);
+  const setRestrictedClick = () => setRestricted(!restricted);
+  const setMilspecClick = () => setMilspec(!milspec);
+  const setIndustrialClick = () => setIndustrial(!industrial);
+  const setConsumerClick = () => setConsumer(!consumer);
+
   const onSubmit = () => {
     let filter = {
       name,
       order,
+      checked: [
+        contraband,
+        covert,
+        classified,
+        restricted,
+        milspec,
+        industrial,
+        consumer,
+      ],
     };
     getItems(filter);
   };
@@ -65,7 +82,7 @@ const FilterItemModal = ({ getItems }) => {
               <input
                 type="checkbox"
                 checked={contraband}
-                onChange={(e) => setContraband(e.target.value)}
+                onChange={setContrabandClick}
               />
               <span className="amber-text darken-3">Contraband</span>
             </label>
@@ -75,7 +92,7 @@ const FilterItemModal = ({ getItems }) => {
               <input
                 type="checkbox"
                 checked={covert}
-                onChange={(e) => setCovert(e.target.value)}
+                onChange={(e) => setCovertClick(e.target.value)}
               />
               <span className="red-text darken-4">Covert</span>
             </label>
@@ -85,7 +102,7 @@ const FilterItemModal = ({ getItems }) => {
               <input
                 type="checkbox"
                 checked={classified}
-                onChange={(e) => setClassified(e.target.value)}
+                onChange={(e) => setClassifiedClick(e.target.value)}
               />
               <span className="pink-text darken-3">Classified</span>
             </label>
@@ -95,7 +112,7 @@ const FilterItemModal = ({ getItems }) => {
               <input
                 type="checkbox"
                 checked={restricted}
-                onChange={(e) => setRestricted(e.target.value)}
+                onChange={(e) => setRestrictedClick(e.target.value)}
               />
               <span className="purple-text darken-4">Restricted</span>
             </label>
@@ -105,7 +122,7 @@ const FilterItemModal = ({ getItems }) => {
               <input
                 type="checkbox"
                 checked={milspec}
-                onChange={(e) => setMilspec(e.target.value)}
+                onChange={(e) => setMilspecClick(e.target.value)}
               />
               <span className="blue-text darken-4">Mil-Spec</span>
             </label>
@@ -115,7 +132,7 @@ const FilterItemModal = ({ getItems }) => {
               <input
                 type="checkbox"
                 checked={industrial}
-                onChange={(e) => setIndustrial(e.target.value)}
+                onChange={(e) => setIndustrialClick(e.target.value)}
               />
               <span className="blue-text lighten-3">Industrial Grade</span>
             </label>
@@ -125,7 +142,7 @@ const FilterItemModal = ({ getItems }) => {
               <input
                 type="checkbox"
                 checked={consumer}
-                onChange={(e) => setConsumer(e.target.value)}
+                onChange={(e) => setConsumerClick(e.target.value)}
               />
               <span className="blue-lighten-5-text ">Consumer Grade</span>
             </label>
