@@ -48,12 +48,20 @@ router.get("/items", async (req, res) => {
     },
   ];
   if (params.checked) {
+    console.log(params.checked);
+    let check_category = [];
+    for (const [key, value] of Object.entries(JSON.parse(params.checked))) {
+      if (value)
+        check_category.push(key.charAt(0).toUpperCase() + key.slice(1));
+    }
+
+    console.log(check_category);
     query.push({
       $match: {},
     });
     query[2].$match["$and"] = [];
     query[2].$match["$and"].push({
-      "rarity_type.rarity": { $in: ["Classified"] },
+      "rarity_type.rarity": { $in: check_category },
     });
   }
   if (params.name) {

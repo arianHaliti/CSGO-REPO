@@ -8,7 +8,7 @@ import { getItems } from "../../../../actions/items";
 const FilterItemModal = ({ getItems }) => {
   const [name, setName] = useState("");
   const [order, setOrder] = useState("");
-  // Checkboxes need fix
+  // Checkboxes need fix this is a mess
   const [contraband, setContraband] = useState(true);
   const [covert, setCovert] = useState(true);
   const [classified, setClassified] = useState(true);
@@ -16,6 +16,10 @@ const FilterItemModal = ({ getItems }) => {
   const [milspec, setMilspec] = useState(true);
   const [industrial, setIndustrial] = useState(true);
   const [consumer, setConsumer] = useState(true);
+  //sticker
+  const [highgrade, setHighGrade] = useState(true);
+  const [remarkable, setRemarkable] = useState(true);
+  const [exotic, setExotic] = useState(true);
 
   const setContrabandClick = () => setContraband(!contraband);
   const setCovertClick = () => setCovert(!covert);
@@ -24,20 +28,29 @@ const FilterItemModal = ({ getItems }) => {
   const setMilspecClick = () => setMilspec(!milspec);
   const setIndustrialClick = () => setIndustrial(!industrial);
   const setConsumerClick = () => setConsumer(!consumer);
+  //sticker
+  const setHighGradeClick = () => setHighGrade(!highgrade);
+  const setRemarkableClick = () => setRemarkable(!remarkable);
+  const setExoticClick = () => setExotic(!exotic);
 
   const onSubmit = () => {
     let filter = {
       name,
       order,
-      checked: [
-        { contraband: contraband },
-        { covert: covert },
-        { classified: classified },
-        { restricted: restricted },
-        { milspec: milspec },
-        { industrial: industrial },
-        { consumer: consumer },
-      ],
+      checked: {
+        contraband: contraband,
+        Covert: covert,
+        Classified: classified,
+        Restricted: restricted,
+        "Mil-Spec Grade": milspec,
+        "Industrial Grade": industrial,
+        "Consumer Grade": consumer,
+        //sticker
+        "High Grade": highgrade,
+        Remarkable: remarkable,
+        Exotic: exotic,
+        //"Base Grade":basegrade
+      },
     };
     getItems(filter);
   };
@@ -76,81 +89,128 @@ const FilterItemModal = ({ getItems }) => {
             </select>
           </div>
         </div>
-        <form action="#">
-          <p>
-            <label>
-              <input
-                type="checkbox"
-                checked={contraband}
-                onChange={setContrabandClick}
-              />
-              <span className="amber-text darken-3">Contraband</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input
-                type="checkbox"
-                checked={covert}
-                onChange={(e) => setCovertClick(e.target.value)}
-              />
-              <span className="red-text darken-4">Covert</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input
-                type="checkbox"
-                checked={classified}
-                onChange={(e) => setClassifiedClick(e.target.value)}
-              />
-              <span className="pink-text darken-3">Classified</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input
-                type="checkbox"
-                checked={restricted}
-                onChange={(e) => setRestrictedClick(e.target.value)}
-              />
-              <span className="purple-text darken-4">Restricted</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input
-                type="checkbox"
-                checked={milspec}
-                onChange={(e) => setMilspecClick(e.target.value)}
-              />
-              <span className="blue-text darken-4">Mil-Spec</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input
-                type="checkbox"
-                checked={industrial}
-                onChange={(e) => setIndustrialClick(e.target.value)}
-              />
-              <span className="blue-text lighten-3">Industrial Grade</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input
-                type="checkbox"
-                checked={consumer}
-                onChange={(e) => setConsumerClick(e.target.value)}
-              />
-              <span className="blue-lighten-5-text ">Consumer Grade</span>
-            </label>
-          </p>
-        </form>
+        <div className="row">
+          <div class="col s4">
+            <p>Weapons </p>
+            <form action="#">
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={contraband}
+                    onChange={setContrabandClick}
+                  />
+                  <span className="amber-text darken-3">Contraband</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={covert}
+                    onChange={(e) => setCovertClick(e.target.value)}
+                  />
+                  <span className="red-text darken-4">Covert</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={classified}
+                    onChange={(e) => setClassifiedClick(e.target.value)}
+                  />
+                  <span className="pink-text darken-3">Classified</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={restricted}
+                    onChange={(e) => setRestrictedClick(e.target.value)}
+                  />
+                  <span className="purple-text darken-4">Restricted</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={milspec}
+                    onChange={(e) => setMilspecClick(e.target.value)}
+                  />
+                  <span className="blue-text darken-4">Mil-Spec</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={industrial}
+                    onChange={(e) => setIndustrialClick(e.target.value)}
+                  />
+                  <span className="blue-text lighten-3">Industrial Grade</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={consumer}
+                    onChange={(e) => setConsumerClick(e.target.value)}
+                  />
+                  <span className="blue-lighten-5-text ">Consumer Grade</span>
+                </label>
+              </p>
+            </form>
+          </div>
+          <div class="col s4">
+            <p>Stickers </p>
+            <form action="#">
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={highgrade}
+                    onChange={setHighGradeClick}
+                  />
+                  <span className="amber-text darken-3">High Grade</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={remarkable}
+                    onChange={(e) => setRemarkableClick(e.target.value)}
+                  />
+                  <span className="red-text darken-4">Remarkable</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={exotic}
+                    onChange={(e) => setExoticClick(e.target.value)}
+                  />
+                  <span className="pink-text darken-3">Exotic</span>
+                </label>
+              </p>
+            </form>
+          </div>
+        </div>
       </div>
 
       <div className="modal-footer modal-default">
+        <a
+          href="#!"
+          onClick={getItems}
+          className="modal-close waves-effect wave-green btn-flat modal-default"
+        >
+          CLEAR
+        </a>
         <a
           href="#!"
           onClick={onSubmit}

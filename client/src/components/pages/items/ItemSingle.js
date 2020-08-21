@@ -53,6 +53,8 @@ const ItemSingle = ({ items, prices, rarity, additional = null }) => {
           ) : (
             ""
           )}
+          <br></br>
+          <strong>{rarity[0].rarity}</strong>
         </div>
       </a>
       <div className="card-tabs ">

@@ -12,17 +12,22 @@ const Pagination = ({
   return (
     <div>
       <ul className="pagination center">
-        <li className={page === 1 ? "disabled " : "active"}>
-          <a
-            href="#!"
-            onClick={() => {
-              params.page = --page;
-              getItems(params);
-            }}
-          >
-            <i className="material-icons">chevron_left</i>
-          </a>
-        </li>
+        {page !== 1 ? (
+          <li className={page === 1 ? "disabled " : "active"}>
+            <a
+              href="#!"
+              onClick={() => {
+                params.page = --page;
+                getItems(params);
+              }}
+            >
+              <i className="material-icons">chevron_left</i>
+            </a>
+          </li>
+        ) : (
+          ""
+        )}
+
         {pageNumbers.map((number) => (
           <li className={number === page ? "active" : ""} key={number}>
             <a
@@ -36,18 +41,21 @@ const Pagination = ({
             </a>
           </li>
         ))}
-
-        <li className={page === pageNumbers.length ? "disabled" : "active"}>
-          <a
-            href="#!"
-            onClick={() => {
-              params.page = ++page;
-              getItems(params);
-            }}
-          >
-            <i className="material-icons">chevron_right</i>
-          </a>
-        </li>
+        {page !== pageNumbers.length ? (
+          <li className={page === pageNumbers.length ? "disabled" : "active"}>
+            <a
+              href="#!"
+              onClick={() => {
+                params.page = ++page;
+                getItems(params);
+              }}
+            >
+              <i className="material-icons">chevron_right</i>
+            </a>
+          </li>
+        ) : (
+          ""
+        )}
       </ul>
     </div>
   );
