@@ -68,11 +68,16 @@ const Item = ({
               ""
             )}
           </div>
-          <Pagination
-            additional={additional}
-            params={additional.params}
-            getItems={getItems}
-          />
+          {additional.itemperpage > additional.count ? (
+            ""
+          ) : (
+            <Pagination
+              additional={additional}
+              params={additional.params}
+              getItems={getItems}
+            />
+          )}
+
           <div className="row">
             {items.map((item) => (
               <ItemSingle
@@ -83,11 +88,15 @@ const Item = ({
               />
             ))}
           </div>
-          <Pagination
-            additional={additional}
-            params={additional.params}
-            getItems={getItems}
-          />
+          {additional.itemperpage > additional.count ? (
+            ""
+          ) : (
+            <Pagination
+              additional={additional}
+              params={additional.params}
+              getItems={getItems}
+            />
+          )}
         </Fragment>
       )}
     </Fragment>

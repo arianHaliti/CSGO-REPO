@@ -30,13 +30,13 @@ const FilterItemModal = ({ getItems }) => {
       name,
       order,
       checked: [
-        contraband,
-        covert,
-        classified,
-        restricted,
-        milspec,
-        industrial,
-        consumer,
+        { contraband: contraband },
+        { covert: covert },
+        { classified: classified },
+        { restricted: restricted },
+        { milspec: milspec },
+        { industrial: industrial },
+        { consumer: consumer },
       ],
     };
     getItems(filter);

@@ -13,7 +13,7 @@ router.get("/items", async (req, res) => {
   let limit = 300;
   let page = 1;
   let params = req.query;
-  console.log(params);
+  // console.log(params);
   if (params) {
     if (params.name) {
       match = {
@@ -21,17 +21,12 @@ router.get("/items", async (req, res) => {
       };
     }
     if (params.checked) {
-      console.log(params.checked);
+      // console.log(params.checked);
     }
     if (params.page) page = parseInt(params.page);
     if (page > 1) skip = limit * (page - 1);
   }
-
-  // let items = await Item.find(match)
-  //   .skip(skip)
-  //   .limit(limit)
-  //   .populate({ path: "price_list", options: { $sort: { "prices.price": 1 } } })
-  //   .populate("rarity_type");
+  console.log(params.checked);
 
   //NEEDS WORK
   let query = [
@@ -54,15 +49,18 @@ router.get("/items", async (req, res) => {
   ];
   if (params.checked) {
     query.push({
-      $match: { "rarity_type.rarity": { $in: ["Classified"] } },
+      $match: {},
+    });
+    query[2].$match["$and"] = [];
+    query[2].$match["$and"].push({
+      "rarity_type.rarity": { $in: ["Classified"] },
     });
   }
   if (params.name) {
-    query.$match = {
+    query[2].$match["$and"].push({
       market_hash_name: { $regex: params.name, $options: "i" },
-    };
+    });
   }
-  console.log(query);
   let queryCount = query.slice();
 
   queryCount.push({
@@ -71,13 +69,14 @@ router.get("/items", async (req, res) => {
       count: { $sum: 1 },
     },
   });
+  // console.log(queryCount);
   let count = await Item.aggregate(queryCount);
 
+  count = count[0] ? count[0].count : 0;
   query.push({ $skip: skip });
   query.push({ $limit: limit });
 
   let items = await Item.aggregate(query);
-  count = count[0].count;
 
   additional = {
     itemperpage: limit,
