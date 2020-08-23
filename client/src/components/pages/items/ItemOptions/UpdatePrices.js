@@ -12,7 +12,7 @@ const UpdatePrices = ({ invetoryStatus, updatePrices }) => {
     return <PreloaderCircle />;
   }
   let diff_end = 0;
-  let timeout = 4;
+  let timeout = 3;
   let current_server_time = Date.now();
   if (invetoryStatus.price_status === "processing") {
     let current_server_time = moment(Date.now());
