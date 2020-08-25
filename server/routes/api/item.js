@@ -77,7 +77,8 @@ router.get("/items", async (req, res) => {
       count: { $sum: 1 },
     },
   });
-  // console.log(queryCount);
+
+  console.log(JSON.stringify(query, undefined, 2));
   let count = await Item.aggregate(queryCount);
 
   count = count[0] ? count[0].count : 0;

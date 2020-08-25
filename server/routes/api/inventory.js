@@ -113,28 +113,23 @@ router.post("/", async (req, res) => {
 // @route   GET /inventory/get
 // @desc    Gets Status of inventory update
 // @access  Private
-router.post("/get", async (req, res) => {
-  console.log(req.body.id);
-  let client = req.body.id;
+router.get("/get/:id", async (req, res) => {
+  let client = req.params.id;
+  let params = req.query;
+
   let response = await findClient(client);
 
-  console.log(client);
+  console.log(client, "~~~~ID");
   if (response.status) {
     // client = "76561198139880065";
 
     let user = await User.findOne({ steamid: client });
 
-    let items = await Inventory.aggregate([
-      {
-        $match: {
-          steamid: client,
-        },
-      },
+    let query = [
       { $project: { _id: 0, items: 1 } },
       {
         $limit: 1,
       },
-      { $sort: { created_at: -1 } },
       { $unwind: "$items" },
       {
         $lookup: {
@@ -156,13 +151,38 @@ router.post("/get", async (req, res) => {
 
       {
         $lookup: {
-          from: "rarities", // collection name in db
+          from: Rarity.collection.name,
           localField: "items_info.rarity",
           foreignField: "_id",
           as: "rarity_type",
         },
       },
-    ]);
+      {
+        $match: {
+          steamid: client,
+        },
+      },
+    ];
+
+    if (params.checked) {
+      let check_category = [];
+      for (const [key, value] of Object.entries(JSON.parse(params.checked))) {
+        if (value)
+          check_category.push(key.charAt(0).toUpperCase() + key.slice(1));
+      }
+
+      query[0].$match["$and"] = [];
+      query[0].$match["$and"].push({
+        "rarity_type.rarity": { $in: check_category },
+      });
+    }
+    if (params.name) {
+      query[0].$match["$and"].push({
+        market_hash_name: { $regex: params.name, $options: "i" },
+      });
+    }
+    console.log(JSON.stringify(query, undefined, 2));
+    let items = await Inventory.aggregate(query);
 
     additional = {
       totalCount: items.length,

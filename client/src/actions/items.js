@@ -10,7 +10,6 @@ import {
 export const getItems = (filter = null) => async (dispatch) => {
   try {
     dispatch(setLoading());
-    console.log(filter);
     const res = await axios.get("/api/items/items", {
       params: filter,
     });

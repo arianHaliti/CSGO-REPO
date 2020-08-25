@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //redux
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getItems } from "../../../../actions/items";
-const FilterItemModal = ({ getItems }) => {
+import { getInventory } from "../../../../actions/inventory";
+const FilterItemModal = ({ getItems, getInventory }) => {
   const [name, setName] = useState("");
   const [order, setOrder] = useState("");
   // Checkboxes need fix this is a mess
@@ -52,7 +53,37 @@ const FilterItemModal = ({ getItems }) => {
         //"Base Grade":basegrade
       },
     };
-    getItems(filter);
+    let path = window.location.pathname.split("/")[1];
+    console.log(window.location.pathname);
+    switch (path) {
+      case "inventory":
+        let id = window.location.pathname.substring(
+          window.location.pathname.lastIndexOf("/") + 1
+        );
+        getInventory({ id: id }, filter);
+        break;
+      case "items":
+        getItems(filter);
+        break;
+      default:
+    }
+  };
+
+  useEffect(() => {
+    const enterFunction = (event) => {
+      if (event.keyCode === 13) {
+        document.getElementById("sort-button").click();
+      }
+    };
+    document.addEventListener("keyup", enterFunction, false);
+
+    return () => {
+      document.removeEventListener("keyup", enterFunction, false);
+    };
+  }, []);
+
+  const onClear = () => {
+    getItems();
   };
   return (
     <div id="add-filter-modal" className="modal modal-default">
@@ -90,7 +121,7 @@ const FilterItemModal = ({ getItems }) => {
           </div>
         </div>
         <div className="row">
-          <div class="col s4">
+          <div className="col s4">
             <p>Weapons </p>
             <form action="#">
               <p>
@@ -165,7 +196,7 @@ const FilterItemModal = ({ getItems }) => {
               </p>
             </form>
           </div>
-          <div class="col s4">
+          <div className="col s4">
             <p>Stickers </p>
             <form action="#">
               <p>
@@ -206,7 +237,7 @@ const FilterItemModal = ({ getItems }) => {
       <div className="modal-footer modal-default">
         <a
           href="#!"
-          onClick={getItems}
+          onClick={onClear}
           className="modal-close waves-effect wave-green btn-flat modal-default"
         >
           CLEAR
@@ -215,6 +246,7 @@ const FilterItemModal = ({ getItems }) => {
           href="#!"
           onClick={onSubmit}
           className="modal-close waves-effect wave-green btn-flat modal-default"
+          id="sort-button"
         >
           SORT
         </a>
@@ -224,5 +256,6 @@ const FilterItemModal = ({ getItems }) => {
 };
 FilterItemModal.propTypes = {
   getItems: PropTypes.func.isRequired,
+  getInventory: PropTypes.func.isRequired,
 };
-export default connect(null, { getItems })(FilterItemModal);
+export default connect(null, { getItems, getInventory })(FilterItemModal);

@@ -8,7 +8,9 @@ function SingleUser({ user }) {
       style={{ marginRight: "10px" }}
     >
       <Link
-        to={{ pathname: "/inventory/get", state: { search: user.steamid } }}
+        to={{
+          pathname: `/inventory/get/${user.steamid}`,
+        }}
       >
         <img className="responsive-img" src={user.avatarfull}></img>
       </Link>

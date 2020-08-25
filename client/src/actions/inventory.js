@@ -7,17 +7,14 @@ import {
   SET_LOADING_INVENTORY,
 } from "./types";
 
-export const getInventory = (filter) => async (dispatch) => {
+export const getInventory = (id, filter = null) => async (dispatch) => {
   try {
     dispatch(setLoading());
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
 
-    console.log(filter);
-    const insert = await axios.post("/inventory/get", filter, config);
+    console.log(id.id);
+    const insert = await axios.get(`/inventory/get/${id.id}`, {
+      params: filter,
+    });
     // const insert = await axios.post("/inventory", filter, config);
 
     if (insert.data.error) {

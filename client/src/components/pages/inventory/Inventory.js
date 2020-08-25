@@ -8,9 +8,9 @@ import UpdateInvetoryBtn from "./InventoryOptions/UpdateInventory";
 //redux
 import { connect } from "react-redux";
 import { getInventory, updateInventory } from "../../../actions/inventory";
-
+import FilterItemModal from "../../../components/pages/items/ItemOptions/FilterItemModal";
 const Inventory = ({
-  location,
+  match,
   getInventory,
   inventory: {
     loading,
@@ -18,7 +18,7 @@ const Inventory = ({
   },
 }) => {
   useEffect(() => {
-    getInventory({ id: location.state.search });
+    getInventory({ id: match.params.id });
     // eslint-disable-next-line
   }, []);
   // LOAD BUTTON needs work
@@ -45,6 +45,7 @@ const Inventory = ({
           <p className="center">No items found...</p>
         ) : (
           <Fragment>
+            <FilterItemModal />
             <div className="row">
               <div className="col s2 ">
                 <a href={user.profileurl} target="_blank">
