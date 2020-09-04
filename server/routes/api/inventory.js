@@ -126,6 +126,11 @@ router.get("/get/:id", async (req, res) => {
     let user = await User.findOne({ steamid: client });
 
     let query = [
+      {
+        $match: {
+          steamid: client,
+        },
+      },
       { $project: { _id: 0, items: 1 } },
       {
         $limit: 1,
@@ -157,11 +162,6 @@ router.get("/get/:id", async (req, res) => {
           as: "rarity_type",
         },
       },
-      {
-        $match: {
-          steamid: client,
-        },
-      },
     ];
 
     if (params.checked) {
@@ -171,14 +171,17 @@ router.get("/get/:id", async (req, res) => {
           check_category.push(key.charAt(0).toUpperCase() + key.slice(1));
       }
 
-      query[0].$match["$and"] = [];
-      query[0].$match["$and"].push({
+      query.push({
+        $match: {},
+      });
+      query[8].$match["$and"] = [];
+      query[8].$match["$and"].push({
         "rarity_type.rarity": { $in: check_category },
       });
     }
     if (params.name) {
-      query[0].$match["$and"].push({
-        market_hash_name: { $regex: params.name, $options: "i" },
+      query[8].$match["$and"].push({
+        "items.item": { $regex: params.name, $options: "i" },
       });
     }
     console.log(JSON.stringify(query, undefined, 2));

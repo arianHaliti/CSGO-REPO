@@ -22,6 +22,9 @@ const FilterItemModal = ({ getItems, getInventory }) => {
   const [remarkable, setRemarkable] = useState(true);
   const [exotic, setExotic] = useState(true);
 
+  //Container \ Sprays
+  const [basegrade, setBaseGrade] = useState(true);
+
   const setContrabandClick = () => setContraband(!contraband);
   const setCovertClick = () => setCovert(!covert);
   const setClassifiedClick = () => setClassified(!classified);
@@ -33,6 +36,8 @@ const FilterItemModal = ({ getItems, getInventory }) => {
   const setHighGradeClick = () => setHighGrade(!highgrade);
   const setRemarkableClick = () => setRemarkable(!remarkable);
   const setExoticClick = () => setExotic(!exotic);
+  //Container \ Sprays
+  const setBaseGradeClick = () => setBaseGrade(true);
 
   const onSubmit = () => {
     let filter = {
@@ -50,7 +55,7 @@ const FilterItemModal = ({ getItems, getInventory }) => {
         "High Grade": highgrade,
         Remarkable: remarkable,
         Exotic: exotic,
-        //"Base Grade":basegrade
+        "Base Grade": basegrade,
       },
     };
     let path = window.location.pathname.split("/")[1];
@@ -227,6 +232,21 @@ const FilterItemModal = ({ getItems, getInventory }) => {
                     onChange={(e) => setExoticClick(e.target.value)}
                   />
                   <span className="pink-text darken-3">Exotic</span>
+                </label>
+              </p>
+            </form>
+          </div>
+          <div className="col s4">
+            <p>Container / Graffiti </p>
+            <form action="#">
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={basegrade}
+                    onChange={(e) => setBaseGradeClick(e.target.value)}
+                  />
+                  <span className="blue-lighten-5-text">Base Grade</span>
                 </label>
               </p>
             </form>
