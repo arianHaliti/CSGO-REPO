@@ -1,22 +1,22 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const request = require("request");
-const _ = require("lodash");
-const mongoose = require("mongoose");
+const request = require('request');
+const _ = require('lodash');
+const mongoose = require('mongoose');
 
-const Exterior = require("../../models/Exterior");
-const Type = require("../../models/Types");
-const Inventory = require("../../models/Inventory");
-const User = require("../../models/User");
-const Item = require("../../models/Item");
-const { response } = require("express");
-const e = require("express");
-const axios = require("axios");
+const Exterior = require('../../models/Exterior');
+const Type = require('../../models/Types');
+const Inventory = require('../../models/Inventory');
+const User = require('../../models/User');
+const Item = require('../../models/Item');
+const { response } = require('express');
+const e = require('express');
+const axios = require('axios');
 
 // @route   POST inventory/
 // @desc    Adds new Items
 // @access  Private
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   let client = req.body.id;
   let responses = await findClient(client);
   if (responses.status) {
@@ -27,9 +27,9 @@ router.post("/", async (req, res) => {
         `https://steamcommunity.com/inventory/${client}/730/2?l=english&count=5000`
       )
       .catch(function (error) {
-        console.log(error, "~ Item Add");
+        console.log(error, '~ Item Add');
         res.send({
-          error: "Something went wrong while updating the inventory",
+          error: 'Something went wrong while updating the inventory',
         });
         return;
       });
@@ -63,12 +63,12 @@ router.post("/", async (req, res) => {
         });
 
         if (dbItem.length !== 0) {
-          console.log("Item is Already in  DB : ", item.market_hash_name);
-          console.log("\x1b[33m%s\x1b[0m", dbItem[0].id);
+          console.log('Item is Already in  DB : ', item.market_hash_name);
+          console.log('\x1b[33m%s\x1b[0m', dbItem[0].id);
         } else {
           // Get Rarity
           let rarity = d.tags.filter((cat) => {
-            if (cat.category === "Rarity") return cat.category;
+            if (cat.category === 'Rarity') return cat.category;
           });
 
           // Get Rarity ID from DB
@@ -96,7 +96,7 @@ router.post("/", async (req, res) => {
           // Add new item
           let newItem = new Item(item);
           await newItem.save();
-          console.log("New Item adde with name : ", item.name);
+          console.log('New Item adde with name : ', item.name);
         }
 
         items.push(item);
@@ -113,13 +113,13 @@ router.post("/", async (req, res) => {
 // @route   GET /inventory/get
 // @desc    Gets Status of inventory update
 // @access  Private
-router.get("/get/:id", async (req, res) => {
+router.get('/get/:id', async (req, res) => {
   let client = req.params.id;
   let params = req.query;
 
   let response = await findClient(client);
 
-  console.log(client, "~~~~ID");
+  console.log(client, '~~~~ID');
   if (response.status) {
     // client = "76561198139880065";
 
@@ -131,35 +131,36 @@ router.get("/get/:id", async (req, res) => {
           steamid: client,
         },
       },
+      { $sort: { created_at: -1 } },
       { $project: { _id: 0, items: 1 } },
       {
         $limit: 1,
       },
-      { $unwind: "$items" },
+      { $unwind: '$items' },
       {
         $lookup: {
-          from: "items", // collection name in db
-          localField: "items.itemid",
-          foreignField: "_id",
-          as: "items_info",
+          from: 'items', // collection name in db
+          localField: 'items.itemid',
+          foreignField: '_id',
+          as: 'items_info',
         },
       },
-      { $unwind: "$items_info" },
+      { $unwind: '$items_info' },
       {
         $lookup: {
-          from: "prices", // collection name in db
-          localField: "items_info._id",
-          foreignField: "itemid",
-          as: "price_list",
+          from: 'prices', // collection name in db
+          localField: 'items_info._id',
+          foreignField: 'itemid',
+          as: 'price_list',
         },
       },
 
       {
         $lookup: {
           from: Rarity.collection.name,
-          localField: "items_info.rarity",
-          foreignField: "_id",
-          as: "rarity_type",
+          localField: 'items_info.rarity',
+          foreignField: '_id',
+          as: 'rarity_type',
         },
       },
     ];
@@ -174,14 +175,14 @@ router.get("/get/:id", async (req, res) => {
       query.push({
         $match: {},
       });
-      query[8].$match["$and"] = [];
-      query[8].$match["$and"].push({
-        "rarity_type.rarity": { $in: check_category },
+      query[9].$match['$and'] = [];
+      query[9].$match['$and'].push({
+        'rarity_type.rarity': { $in: check_category },
       });
     }
     if (params.name) {
-      query[8].$match["$and"].push({
-        "items.item": { $regex: params.name, $options: "i" },
+      query[9].$match['$and'].push({
+        'items.item': { $regex: params.name, $options: 'i' },
       });
     }
     console.log(JSON.stringify(query, undefined, 2));
@@ -198,7 +199,7 @@ router.get("/get/:id", async (req, res) => {
         items[i].items.count *
         (typeof (items[i].price_list.length > 0
           ? items[i].price_list[0].last_price
-          : 0) == "undefined"
+          : 0) == 'undefined'
           ? 0
           : items[i].price_list.length > 0
           ? items[i].price_list[0].last_price
@@ -216,14 +217,14 @@ const findClient = async (client) => {
   let status = false;
   let steamid = null;
   let regex = new RegExp(
-    "(?:https?://)?steamcommunity.com/(?:profiles|id)/[a-zA-Z0-9]+$"
+    '(?:https?://)?steamcommunity.com/(?:profiles|id)/[a-zA-Z0-9]+$'
   );
 
   let checkURL = regex.test(client);
 
   // Check if its a URL
   if (checkURL) {
-    client = client.split("/");
+    client = client.split('/');
     client = client[client.length - 1];
     // Check if client exist with nickname (in steam API)
     let res = await axios
@@ -241,7 +242,7 @@ const findClient = async (client) => {
           console.log(error.request);
         } else {
           // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
+          console.log('Error', error.message);
         }
       });
     // Returns 1 if its true
@@ -253,7 +254,7 @@ const findClient = async (client) => {
     }
   } else {
     // Check if its steamid64
-    regex = new RegExp("^[0-9]{17}$");
+    regex = new RegExp('^[0-9]{17}$');
     if (regex.test(client)) {
       // console.log("here", 2);
       status = true;
@@ -274,7 +275,7 @@ const findClient = async (client) => {
             console.log(error.request);
           } else {
             // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
+            console.log('Error', error.message);
           }
         });
       // Returns 1 if its true
@@ -303,7 +304,7 @@ const updateInventory = async (client, body) => {
       }
     });
     let exterior = newItem.tags.filter((cat) => {
-      if (cat.category === "Exterior") return cat.category;
+      if (cat.category === 'Exterior') return cat.category;
     });
     let check = items.find((item) => {
       if (item.item == newItem.market_hash_name) {
@@ -320,7 +321,7 @@ const updateInventory = async (client, body) => {
       items.find((item) => {
         if (item.item == newItem.market_hash_name) {
           console.log(
-            "\x1b[33m%s\x1b[0m",
+            '\x1b[33m%s\x1b[0m',
             `Counting item ${newItem.market_hash_name} ++ ~ ${item.count}`
           );
 
@@ -405,31 +406,31 @@ const getInventoryItems = async (client) => {
       $limit: 1,
     },
     { $sort: { created_at: -1 } },
-    { $unwind: "$items" },
+    { $unwind: '$items' },
     {
       $lookup: {
-        from: "items", // collection name in db
-        localField: "items.itemid",
-        foreignField: "_id",
-        as: "items_info",
+        from: 'items', // collection name in db
+        localField: 'items.itemid',
+        foreignField: '_id',
+        as: 'items_info',
       },
     },
-    { $unwind: "$items_info" },
+    { $unwind: '$items_info' },
     {
       $lookup: {
-        from: "prices", // collection name in db
-        localField: "items_info._id",
-        foreignField: "itemid",
-        as: "price_list",
+        from: 'prices', // collection name in db
+        localField: 'items_info._id',
+        foreignField: 'itemid',
+        as: 'price_list',
       },
     },
 
     {
       $lookup: {
-        from: "rarities", // collection name in db
-        localField: "items_info.rarity",
-        foreignField: "_id",
-        as: "rarity_type",
+        from: 'rarities', // collection name in db
+        localField: 'items_info.rarity',
+        foreignField: '_id',
+        as: 'rarity_type',
       },
     },
   ]);
@@ -443,7 +444,7 @@ const getInventoryItems = async (client) => {
       items[i].items.count *
       (typeof (items[i].price_list.length > 0
         ? items[i].price_list[0].last_price
-        : 0) == "undefined"
+        : 0) == 'undefined'
         ? 0
         : items[i].price_list.length > 0
         ? items[i].price_list[0].last_price

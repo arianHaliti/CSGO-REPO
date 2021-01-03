@@ -1,20 +1,20 @@
-import React, { useEffect, Fragment } from "react";
-import ItemSingle from "../items/ItemSingle";
-import Preloader from "../../layout/Preloader";
-import PreloaderCircle from "../../layout/PreloaderCricle";
-import PropTypes from "prop-types";
-import AddBtnFilter from "../items/ItemOptions/AddBtnFilter";
-import UpdateInvetoryBtn from "./InventoryOptions/UpdateInventory";
+import React, { useEffect, Fragment } from 'react';
+import ItemSingle from '../items/ItemSingle';
+import Preloader from '../../layout/Preloader';
+import PreloaderCircle from '../../layout/PreloaderCricle';
+import PropTypes from 'prop-types';
+import AddBtnFilter from '../items/ItemOptions/AddBtnFilter';
+import UpdateInvetoryBtn from './InventoryOptions/UpdateInventory';
 //redux
-import { connect } from "react-redux";
-import { getInventory, updateInventory } from "../../../actions/inventory";
-import FilterItemModal from "../../../components/pages/items/ItemOptions/FilterItemModal";
+import { connect } from 'react-redux';
+import { getInventory, updateInventory } from '../../../actions/inventory';
+import FilterItemModal from '../../../components/pages/items/ItemOptions/FilterItemModal';
 const Inventory = ({
   match,
   getInventory,
   inventory: {
     loading,
-    inv: { items, totalCount, total, additional, user },
+    inv: { items, totalCount, total, additional, user, created_at },
   },
 }) => {
   useEffect(() => {
@@ -28,7 +28,7 @@ const Inventory = ({
   return (
     <Fragment>
       {!loading && items != null ? (
-        <div className="items-above-section row">
+        <div className='items-above-section row'>
           <UpdateInvetoryBtn
             updateInventory={updateInventory}
             client={additional.client}
@@ -38,28 +38,28 @@ const Inventory = ({
       ) : (
         <PreloaderCircle />
       )}
-      <div className="row">
+      <div className='row'>
         {!loading && items == null ? (
-          <p className="center">Could not find player...</p>
+          <p className='center'>Could not find player...</p>
         ) : !loading && items.length === 0 ? (
-          <p className="center">No items found...</p>
+          <p className='center'>No items found...</p>
         ) : (
           <Fragment>
             <FilterItemModal />
-            <div className="row">
-              <div className="col s2 ">
-                <a href={user.profileurl} target="_blank">
-                  <img className="responsive-img" src={user.avatarfull}></img>
+            <div className='row'>
+              <div className='col s2 '>
+                <a href={user.profileurl} target='_blank'>
+                  <img className='responsive-img' src={user.avatarfull}></img>
                 </a>
               </div>
-              <div className="col s10">
+              <div className='col s10'>
                 <h5>
-                  Owner of Inventory{" "}
-                  <span className="red-color-text">{user.personaname}</span>
+                  Owner of Inventory{' '}
+                  <span className='red-color-text'>{user.personaname}</span>
                 </h5>
                 <h4>
-                  Total Inventory value:{" "}
-                  <span className="red-color-text">{total.toFixed(2)}</span>€
+                  Total Inventory value:{' '}
+                  <span className='red-color-text'>{total.toFixed(2)}</span>€
                 </h4>
               </div>
             </div>

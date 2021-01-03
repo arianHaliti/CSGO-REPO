@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
-import { updateInventory } from "../../../../actions/inventory";
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { updateInventory } from '../../../../actions/inventory';
 
 const UpdateInventory = ({ updateInventory, client }) => {
   return (
-    <div className=" row  col s4">
-      <div className="items-update-prices">
+    <div className=' row  col s4'>
+      <div className='items-update-prices'>
         <Fragment>
           <h6>Update this inventory</h6>
           <button
